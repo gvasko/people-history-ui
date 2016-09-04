@@ -1,0 +1,21 @@
+
+<div class="container">
+	<ul class="nav nav-pills">
+		<li role="presentation" class="active">
+	  		<a data-target="#Editor" data-toggle="tab" role="tab">Editor</a>
+		</li>
+		<li role="presentation">
+			<a data-target="#Console" data-toggle="tab" role="tab">Console</a>
+		</li>
+		<li role="presentation">
+			<a data-target="#Rendering" data-toggle="tab" role="tab">Rendering</a>
+		</li>
+	</ul>
+
+	<div class="tab-content clearfix">
+		<div id="Editor" data-ng-include="'app/workspace/editor/editor.html'" role="tabpanel" class="tab-pane fade in active"></div>
+		<div id="Console" data-ng-include="'app/workspace/console/console.html'" role="tabpanel" class="tab-pane fade"></div>
+		<div id="Rendering" data-ng-include="'app/workspace/rendering/rendering.html'" role="tabpanel" class="tab-pane fade"></div>
+	</div>
+
+</div>

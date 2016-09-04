@@ -15,6 +15,10 @@
 			templateUrl: 'app/document-browser/document-browser.html'
 		});
 
+		$routeProvider.when('/workspace', {
+			templateUrl: 'app/workspace/workspace.html'
+		});
+
 		$routeProvider.otherwise({ redirectTo: '/home'});
 
 		// $locationProvider.html5Mode({
