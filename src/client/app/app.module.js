@@ -2,7 +2,8 @@
 	'use strict';
 
 	var app = angular.module('app', [
-		'ngRoute'
+		'ngRoute',
+		'documentBrowser'
 	]);
 
 	app.config(function($routeProvider, $locationProvider) {
