@@ -3,7 +3,7 @@
 
 	var app = angular.module('app', [
 		'ngRoute',
-		'documentBrowser'
+		'phDocumentBrowser'
 	]);
 
 	app.config(function($routeProvider, $locationProvider) {

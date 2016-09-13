@@ -2,7 +2,7 @@
 	'use strict';
 
 	angular
-		.module('documentBrowser')
+		.module('phDocumentBrowser')
 		.controller('DocumentBrowser', DocumentBrowser);
 
 	DocumentBrowser.$inject = [];
