@@ -27,8 +27,16 @@
 						['Mary', 'Moe', 'mary@example.com'],
 						['July', 'Dooley', 'july@example.com']
 					]
-				}
-
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Person", action: nop, enabled: enabled },
+					{ name: "Edit", action: nop, enabled: enabled },
+					{ name: "Delete", action: nop, enabled: enabled }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: enabled },
+				]
 			};
 		}
 
@@ -42,7 +50,17 @@
 						['Got married', '1949', 'Debrecen'],
 						['Died', '2017', 'Nyiregyhaza']
 					]
-				}
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Event", action: nop, enabled: enabled },
+					{ name: "Edit", action: nop, enabled: enabled },
+					{ name: "Delete", action: nop, enabled: enabled }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: enabled },
+					{ name: "Event Types", action: nop, enabled: enabled }
+				]
 			};
 		}
 
@@ -56,7 +74,18 @@
 						['Mother', 'Mary Moe'],
 						['Sister', 'July Dooley']
 					]
-				}
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Event", action: nop, enabled: enabled },
+					{ name: "Edit", action: nop, enabled: enabled },
+					{ name: "Delete", action: nop, enabled: enabled }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: enabled },
+					{ name: "Relation Types", action: nop, enabled: enabled }
+				]
+
 			};
 		}
 
@@ -70,9 +99,29 @@
 						['Ended', '1939', 'Something else'],
 						['Who knows', '1966', 'Remember']
 					]
-				}
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Event", action: nop, enabled: enabled },
+					{ name: "Edit", action: nop, enabled: enabled },
+					{ name: "Delete", action: nop, enabled: enabled }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: enabled },
+					{ name: "Event Types", action: nop, enabled: enabled }
+				]
+
 			};
 		}
+
+		function nop() {
+			console.log("nop");
+		}
+
+		function enabled() {
+			return false;
+		}
+
 	}
 
 })();

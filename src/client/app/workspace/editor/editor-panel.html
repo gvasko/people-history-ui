@@ -1,0 +1,39 @@
+		<div class="ph-panel">
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#{{vm.title}}-navbar" aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar" ng-repeat="item in vm.actions"></span>
+							<span class="icon-bar" ng-if="vm.options.length > 0"></span>
+						</button>
+						<a class="navbar-brand">{{vm.title}}</a>
+					</div>
+					<div class="collapse navbar-collapse" id="{{vm.title}}-navbar">
+						<ul class="nav navbar-nav">
+							<li ng-repeat="item in vm.actions"><a class="navbar-link" ng-click="item.action()" ng-disabled="!item.enabled()">{{item.name}}</a></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right" ng-if="vm.options.length > 0">
+							<li class="dropdown">
+								<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
+								<ul class="dropdown-menu">
+ 									<li ng-repeat="opt in vm.options"><a ng-click="opt.action()" ng-disabled="!opt.enabled()">{{opt.name}}</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th ng-repeat="h in vm.data.header">{{h}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="row in vm.data.rows">
+						<td ng-repeat="cell in row">{{cell}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
