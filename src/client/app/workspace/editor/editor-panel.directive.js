@@ -8,7 +8,7 @@
 	function phEditorPanel() {
 		var directive = {
 			scope: {
-				'vm': '='
+				'vm': '=',
 			},
 			templateUrl: 'app/workspace/editor/editor-panel.html',
 			restrict: 'E'

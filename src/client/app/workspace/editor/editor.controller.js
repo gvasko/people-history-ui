@@ -119,7 +119,7 @@
 		}
 
 		function enabled() {
-			return false;
+			return true;
 		}
 
 	}

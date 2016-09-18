@@ -10,14 +10,14 @@
 						<a class="navbar-brand">{{vm.title}}</a>
 					</div>
 					<div class="collapse navbar-collapse" id="{{vm.title}}-navbar">
-						<ul class="nav navbar-nav">
-							<li ng-repeat="item in vm.actions"><a class="navbar-link" ng-click="item.action()" ng-disabled="!item.enabled()">{{item.name}}</a></li>
-						</ul>
+						<div class="nav navbar-nav btn-group" role="group">
+							<button ng-repeat="item in vm.actions" class="btn btn-default navbar-btn" ng-click="item.action()" ng-disabled="!item.enabled()" href="javascript:void(0);">{{item.name}}</button>
+						</div>
 						<ul class="nav navbar-nav navbar-right" ng-if="vm.options.length > 0">
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
 								<ul class="dropdown-menu">
- 									<li ng-repeat="opt in vm.options"><a ng-click="opt.action()" ng-disabled="!opt.enabled()">{{opt.name}}</a></li>
+ 									<li ng-repeat="opt in vm.options" ng-class="{disabled: !opt.enabled()}"><a ng-click="opt.action()" href="javascript:void(0);">{{opt.name}}</a></li>
 								</ul>
 							</li>
 						</ul>
