@@ -11,7 +11,16 @@
 				'vm': '=',
 			},
 			templateUrl: 'app/workspace/editor/editor-panel.html',
-			restrict: 'E'
+			restrict: 'E',
+			link: function(scope) {
+				scope.selectRow = function(row) {
+					if (scope.selectedRow === row) {
+						scope.selectedRow = -1;
+					} else {
+						scope.selectedRow = row;
+					}
+				}
+			}
 		};
 		return directive;
 	}

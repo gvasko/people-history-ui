@@ -31,8 +31,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="row in vm.data.rows">
-						<td ng-repeat="cell in row">{{cell}}</td>
+					<tr ng-repeat="row in vm.data.rows" ng-class="{info: $index === selectedRow}">
+						<td ng-repeat="cell in row" ng-click="selectRow($parent.$index)">{{cell}}</td>
 					</tr>
 				</tbody>
 			</table>
