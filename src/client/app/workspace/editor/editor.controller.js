@@ -30,12 +30,12 @@
 				},
 				actions: [
 					// TODO: use ctor
-					{ name: "Add Person", action: nop, enabled: enabled },
-					{ name: "Edit", action: nop, enabled: enabled },
-					{ name: "Delete", action: nop, enabled: enabled }
+					{ name: "Add Person", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
 				],
 				options: [
-					{ name: "Columns", action: nop, enabled: enabled },
+					{ name: "Columns", action: nop, enabled: whenInitialized },
 				]
 			};
 		}
@@ -53,13 +53,13 @@
 				},
 				actions: [
 					// TODO: use ctor
-					{ name: "Add Event", action: nop, enabled: enabled },
-					{ name: "Edit", action: nop, enabled: enabled },
-					{ name: "Delete", action: nop, enabled: enabled }
+					{ name: "Add Event", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
 				],
 				options: [
-					{ name: "Columns", action: nop, enabled: enabled },
-					{ name: "Event Types", action: nop, enabled: enabled }
+					{ name: "Columns", action: nop, enabled: whenInitialized },
+					{ name: "Event Types", action: nop, enabled: whenInitialized }
 				]
 			};
 		}
@@ -77,13 +77,13 @@
 				},
 				actions: [
 					// TODO: use ctor
-					{ name: "Add Event", action: nop, enabled: enabled },
-					{ name: "Edit", action: nop, enabled: enabled },
-					{ name: "Delete", action: nop, enabled: enabled }
+					{ name: "Add Event", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
 				],
 				options: [
-					{ name: "Columns", action: nop, enabled: enabled },
-					{ name: "Relation Types", action: nop, enabled: enabled }
+					{ name: "Columns", action: nop, enabled: whenInitialized },
+					{ name: "Relation Types", action: nop, enabled: whenInitialized }
 				]
 
 			};
@@ -102,13 +102,13 @@
 				},
 				actions: [
 					// TODO: use ctor
-					{ name: "Add Event", action: nop, enabled: enabled },
-					{ name: "Edit", action: nop, enabled: enabled },
-					{ name: "Delete", action: nop, enabled: enabled }
+					{ name: "Add Event", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
 				],
 				options: [
-					{ name: "Columns", action: nop, enabled: enabled },
-					{ name: "Event Types", action: nop, enabled: enabled }
+					{ name: "Columns", action: nop, enabled: whenInitialized },
+					{ name: "Event Types", action: nop, enabled: whenInitialized }
 				]
 
 			};
@@ -120,6 +120,14 @@
 
 		function enabled() {
 			return true;
+		}
+
+		function whenInitialized(actionEnvironment) {
+			return actionEnvironment.initialized;
+		}
+
+		function whenSelected(actionEnvironment) {
+			return actionEnvironment.selected;
 		}
 
 	}

@@ -11,13 +11,13 @@
 					</div>
 					<div class="collapse navbar-collapse" id="{{vm.title}}-navbar">
 						<div class="nav navbar-nav btn-group" role="group">
-							<button ng-repeat="item in vm.actions" class="btn btn-default navbar-btn" ng-click="item.action()" ng-disabled="!item.enabled()" href="javascript:void(0);">{{item.name}}</button>
+							<button ng-repeat="item in vm.actions" class="btn btn-default navbar-btn" ng-click="item.action()" ng-disabled="!item.enabled(getActionEnvironment())" href="javascript:void(0);">{{item.name}}</button>
 						</div>
 						<ul class="nav navbar-nav navbar-right" ng-if="vm.options.length > 0">
 							<li class="dropdown">
 								<a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Options <span class="caret"></span></a>
 								<ul class="dropdown-menu">
- 									<li ng-repeat="opt in vm.options" ng-class="{disabled: !opt.enabled()}"><a ng-click="opt.action()" href="javascript:void(0);">{{opt.name}}</a></li>
+ 									<li ng-repeat="opt in vm.options" ng-class="{disabled: !opt.enabled(getActionEnvironment())}"><a ng-click="opt.action()" href="javascript:void(0);">{{opt.name}}</a></li>
 								</ul>
 							</li>
 						</ul>

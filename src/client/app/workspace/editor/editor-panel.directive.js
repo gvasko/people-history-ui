@@ -20,6 +20,12 @@
 						scope.selectedRow = row;
 					}
 				}
+				scope.getActionEnvironment = function() {
+					return {
+						initialized: true,
+						selected: scope.selectedRow >= 0
+					};
+				}
 			}
 		};
 		return directive;
