@@ -9,10 +9,31 @@
 
 	function Editor() {
 		var vm = this;
-		vm.people = loadPeople();
-		vm.personalEvents = loadPersonalEvents();
-		vm.relationships = loadRelationships();
-		vm.relationshipEvents = loadRelationshipEvents();
+		vm.document = {
+			people: loadPeople(),
+			personalEvents: loadPersonalEvents(),
+			relationships: loadRelationships(),
+			relationshipEvents: loadRelationshipEvents(),
+
+
+			// TODO: row is for testing purposes
+			selectPerson: function(row) {
+				var newPE = loadPersonalEvents(this.people.data.rows[row][1]);
+				this.personalEvents.data = newPE.data;
+			},
+			unselectPerson: function() {
+				this.personalEvents.data.rows = [];
+			}
+			// selectPersonalEvent: function(personalEvent) {
+
+			// },
+			// selectRelationship: function(relationship) {
+
+			// },
+			// selectRelationshipEvent: function(relationshipEvent) {
+
+			// }
+		};
 
 		function loadPeople() {
 			return {
@@ -28,6 +49,9 @@
 						['July', 'Dooley', 'july@example.com']
 					]
 				},
+				eventHandlers: {
+					selectionChanged: setCurrentPerson
+				},
 				actions: [
 					// TODO: use ctor
 					{ name: "Add Person", action: nop, enabled: whenInitialized },
@@ -40,7 +64,18 @@
 			};
 		}
 
-		function loadPersonalEvents() {
+		function loadPersonalEvents(person) {
+			switch (person) {
+				case "Moe":
+					return loadPersonalEventsMoe();
+				case "Dooley":
+					return loadPersonalEventsDooley();
+				default:
+					return loadPersonalEventsDoe();
+			}
+		}
+
+		function loadPersonalEventsDoe() {
 			return {
 				title: 'Personal Events',
 				data: {
@@ -50,6 +85,63 @@
 						['Got married', '1949', 'Debrecen'],
 						['Died', '2017', 'Nyiregyhaza']
 					]
+				},
+				eventHandlers: {
+					selectionChanged: nop
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Event", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: whenInitialized },
+					{ name: "Event Types", action: nop, enabled: whenInitialized }
+				]
+			};
+		}
+
+		function loadPersonalEventsDooley() {
+			return {
+				title: 'Personal Events',
+				data: {
+					header: ['What', 'When', 'Where'],
+					rows: [
+						['Born', '1917', 'Szerencs'],
+						['Got married', '1939', 'Miskolc'],
+						['Died', '2007', 'Szikszo']
+					]
+				},
+				eventHandlers: {
+					selectionChanged: nop
+				},
+				actions: [
+					// TODO: use ctor
+					{ name: "Add Event", action: nop, enabled: whenInitialized },
+					{ name: "Edit", action: nop, enabled: whenSelected },
+					{ name: "Delete", action: nop, enabled: whenSelected }
+				],
+				options: [
+					{ name: "Columns", action: nop, enabled: whenInitialized },
+					{ name: "Event Types", action: nop, enabled: whenInitialized }
+				]
+			};
+		}
+
+		function loadPersonalEventsMoe() {
+			return {
+				title: 'Personal Events',
+				data: {
+					header: ['What', 'When', 'Where'],
+					rows: [
+						['Born', '1937', 'Miskolc'],
+						['Got married', '1959', 'Szeged'],
+						['Died', '2017', 'Miskolc']
+					]
+				},
+				eventHandlers: {
+					selectionChanged: nop
 				},
 				actions: [
 					// TODO: use ctor
@@ -74,6 +166,9 @@
 						['Mother', 'Mary Moe'],
 						['Sister', 'July Dooley']
 					]
+				},
+				eventHandlers: {
+					selectionChanged: nop
 				},
 				actions: [
 					// TODO: use ctor
@@ -100,6 +195,9 @@
 						['Who knows', '1966', 'Remember']
 					]
 				},
+				eventHandlers: {
+					selectionChanged: nop
+				},
 				actions: [
 					// TODO: use ctor
 					{ name: "Add Event", action: nop, enabled: whenInitialized },
@@ -116,6 +214,14 @@
 
 		function nop() {
 			console.log("nop");
+		}
+
+		function setCurrentPerson(actionEnvironment) {
+			if (actionEnvironment.selected) {
+				vm.document.selectPerson(actionEnvironment.selectedIndex);
+			} else {
+				vm.document.unselectPerson();
+			}
 		}
 
 		function enabled() {

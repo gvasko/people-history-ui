@@ -3,7 +3,7 @@
 
 	angular
 		.module('phDocumentBrowser')
-		.directive('phDocumentTile',phDocumentTile);
+		.directive('phDocumentTile', phDocumentTile);
 
 	function phDocumentTile() {
 		var directive = {

@@ -19,11 +19,15 @@
 					} else {
 						scope.selectedRow = row;
 					}
+					if (angular.isDefined(scope.vm.eventHandlers.selectionChanged)) {
+						scope.vm.eventHandlers.selectionChanged(scope.getActionEnvironment());
+					}
 				}
 				scope.getActionEnvironment = function() {
 					return {
 						initialized: true,
-						selected: scope.selectedRow >= 0
+						selected: scope.selectedRow >= 0,
+						selectedIndex: scope.selectedRow
 					};
 				}
 			}
