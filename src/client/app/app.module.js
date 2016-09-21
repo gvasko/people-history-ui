@@ -3,6 +3,7 @@
 
 	var app = angular.module('app', [
 		'ngRoute',
+		'phDocumentStorage',
 		'phDocumentBrowser',
 		'phEditor'
 	]);
