@@ -5,55 +5,30 @@
 		.module("phDocumentStorage")
 		.service("documentStorage", documentStorage);
 
-	documentStorage.$inject = [];
+	documentStorage.$inject = ["$q"];
 
-	function documentStorage() {
+	function documentStorage($q) {
 		this.getDocumentList = function() {
-			return getDummyFileList();
+			var deferred = $q.defer();
+			deferred.resolve(getDummyFileList());
+			return deferred.promise;
 		};
 
-		this.loadDocument = function(id) {
-			return new Document();
+		this.loadDocument = function(documentId) {
+			var deferred = $q.defer();
+			// TODO: Build the document here?
+			deferred.resolve(new DocumentViewModel());
+			return deferred.promise;
 		};
 	}
 
 	function getDummyFileList() {
 			return [
-				{
-					id: 1,
-					title: 'Family-1',
-					description: 'Some description',
-					peopleCount: 23,
-					lastEdited: '2016-08-11'
-				},
-				{
-					id: 2,
-					title: 'Family-2',
-					description: 'Some description',
-					peopleCount: 123,
-					lastEdited: '2016-08-11'
-				},
-				{
-					id: 3,
-					title: 'Family-3',
-					description: 'Some description',
-					peopleCount: 143,
-					lastEdited: '2016-08-11'
-				},
-				{
-					id: 4,
-					title: 'Family-4',
-					description: 'Some description',
-					peopleCount: 155,
-					lastEdited: '2016-08-11'
-				},
-				{
-					id: 5,
-					title: 'Family-5',
-					description: 'Some description',
-					peopleCount: 188,
-					lastEdited: '2016-08-11'
-				}
+				new DocumentInfo(1, 'Family-1', 'Some description', 23, '2016-08-11'),
+				new DocumentInfo(2, 'Family-2', 'Some description', 123, '2016-08-11'),
+				new DocumentInfo(3, 'Family-3', 'Some description', 143, '2016-08-11'),
+				new DocumentInfo(4, 'Family-4', 'Some description', 155, '2016-08-11'),
+				new DocumentInfo(5, 'Family-5', 'Some description', 188, '2016-08-11')
 			];
 	}
 

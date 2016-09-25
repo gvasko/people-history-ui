@@ -5,10 +5,16 @@
 		.module('phEditor')
 		.controller('Editor', Editor);
 
-	Editor.$inject = [];
+	Editor.$inject = ['documentStorage'];
 
-	function Editor() {
+	function Editor(documentStorage) {
 		var vm = this;
+		vm.documentId = 1; // TODO
+		// TODO: document and EditorViewModel together sounds as totally different things
+		documentStorage.loadDocument(vm.documentId).then(function(documentViewModel) {
+			vm.document = new EditorViewModel(documentViewModel);
+		});
+/*		
 		vm.document = {
 			people: loadPeople(),
 			personalEvents: loadPersonalEvents(),
@@ -24,15 +30,6 @@
 			unselectPerson: function() {
 				this.personalEvents.data.rows = [];
 			}
-			// selectPersonalEvent: function(personalEvent) {
-
-			// },
-			// selectRelationship: function(relationship) {
-
-			// },
-			// selectRelationshipEvent: function(relationshipEvent) {
-
-			// }
 		};
 
 		function loadPeople() {
@@ -41,8 +38,8 @@
 				data: {
 					header : ['FirstName', 'LastName', 'Email'],
 					rows : [
-						['John', 'Doe', 'john@example.com'],
 						['Mary', 'Moe', 'mary@example.com'],
+						['John', 'Doe', 'john@example.com'],
 						['July', 'Dooley', 'july@example.com'],
 						['John', 'Doe', 'john@example.com'],
 						['Mary', 'Moe', 'mary@example.com'],
@@ -235,7 +232,7 @@
 		function whenSelected(actionEnvironment) {
 			return actionEnvironment.selected;
 		}
-
+*/
 	}
 
 })();

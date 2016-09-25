@@ -9,7 +9,9 @@
 
 	function DocumentBrowser(documentStorage) {
 		var vm = this;
-		vm.documents = documentStorage.getDocumentList();
+		documentStorage.getDocumentList().then(function(docList) {
+			vm.documents = docList;
+		});
 	}
 
 

@@ -19,8 +19,10 @@
 					} else {
 						scope.selectedRow = row;
 					}
-					if (angular.isDefined(scope.vm.eventHandlers.selectionChanged)) {
+					if (!!scope.vm.eventHandlers.selectionChanged) {
 						scope.vm.eventHandlers.selectionChanged(scope.getActionEnvironment());
+					} else {
+						console.log("Event handler not found for selectionChanged");
 					}
 				}
 				scope.getActionEnvironment = function() {
