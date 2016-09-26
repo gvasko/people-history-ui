@@ -7,11 +7,14 @@ function PanelViewModel(title) {
 		rows: []
 	};
 	this.eventHandlers = {
-		selectionChanged: this.eventHandlerSelectionChanged
+		selectionChanged: this.eventHandlerSelectionChanged.bind(this),
+		rowSelected: null,
+		selectionCleared: null
 	};
 	this.actions = [];
 	this.options = [];
 	this._lastActionEnv = new ActionEnvironment();
+	this._initialized = false;
 }
 
 
@@ -44,10 +47,12 @@ PanelViewModel.prototype.setData = function(recordSet) {
 		}
 		this.addRow(newRow);
 	}
+	this._initialized = true;
 };
 
 PanelViewModel.prototype.clearData = function() {
 	this.data.rows.length = 0;
+	this._initialized = false;
 }
 
 PanelViewModel.prototype.setHeader = function(header) {
@@ -80,11 +85,20 @@ PanelViewModel.prototype.addOption = function(action) {
 }
 
 PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
+	if (actionEnv.isAnySelected) {
+		if (!!this.eventHandlers.rowSelected) {
+			this.eventHandlers.rowSelected(actionEnv.selectedRow);
+		}
+	} else {
+		if (!!this.eventHandlers.selectionCleared) {
+			this.eventHandlers.selectionCleared();
+		}
+	}
 	this._lastActionEnv = actionEnv;
 }
 
 PanelViewModel.prototype.whenInitialized = function(actionEnv) {
-	return true;
+	return this._initialized;
 }
 
 PanelViewModel.prototype.whenAnySelected = function(actionEnv) {

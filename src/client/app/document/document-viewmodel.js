@@ -43,11 +43,27 @@ DocumentViewModel.prototype.getPersonalEventsOf = function(personId) {
 };
 
 DocumentViewModel.prototype.getRelationshipsOf = function(personId) {
-	return [
-		new Relationship(1, 'Father', 'John Doe'),
-		new Relationship(2, 'Mother', 'Mary Moe'),
-		new Relationship(3, 'Sister', 'July Dooley')
+	var relationsMary = [
+		new Relationship(1, 'Father', 'John Doe 1'),
+		new Relationship(2, 'Mother', 'Mary Moe 1'),
+		new Relationship(3, 'Sister', 'July Dooley 1')
 	];
+
+	var relationsJohn = [
+		new Relationship(1, 'Father', 'John Doe 2'),
+		new Relationship(2, 'Mother', 'Mary Moe 2'),
+		new Relationship(3, 'Sister', 'July Dooley 2')
+	];
+
+	var relationsJuly = [
+		new Relationship(1, 'Father', 'John Doe 3'),
+		new Relationship(2, 'Mother', 'Mary Moe 3'),
+		new Relationship(3, 'Sister', 'July Dooley 3')
+	];
+
+	var allRelations = [null, relationsMary, relationsJohn, relationsJuly, relationsMary, relationsJohn, relationsJuly];
+
+	return allRelations[personId];
 };
 
 DocumentViewModel.prototype.getRelationEventsOf = function(relationId) {
