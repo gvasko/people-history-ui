@@ -83,11 +83,11 @@ PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
 	this._lastActionEnv = actionEnv;
 }
 
-PanelViewModel.prototype.whenInitialized = function() {
+PanelViewModel.prototype.whenInitialized = function(actionEnv) {
 	return true;
 }
 
-PanelViewModel.prototype.whenAnySelected = function() {
-	return this._lastActionEnv.isAnySelected;
+PanelViewModel.prototype.whenAnySelected = function(actionEnv) {
+	return actionEnv.isAnySelected;
 }
 

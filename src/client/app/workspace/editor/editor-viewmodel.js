@@ -21,9 +21,9 @@ EditorViewModel.prototype.initPeople = function() {
 		email: "E-mail"
 	});
 	this.people.setData(this._document.getAllPeople());
-	this.people.addAction(new Action("Add Person", this.actionAddPerson, this.people.whenInitializes));
-	this.people.addAction(new Action("Edit", this.actionEditPerson, this.people.whenAnySelected));
-	this.people.addAction(new Action("Delete", this.actionDeletePerson, this.people.whenAnySelected));
+	this.people.addAction(new Action("Add Person", this.actionAddPerson.bind(this), this.people.whenInitialized.bind(this.people)));
+	this.people.addAction(new Action("Edit", this.actionEditPerson.bind(this), this.people.whenAnySelected.bind(this.people)));
+	this.people.addAction(new Action("Delete", this.actionDeletePerson.bind(this), this.people.whenAnySelected.bind(this.people)));
 }
 
 EditorViewModel.prototype.selectPerson = function(id) {

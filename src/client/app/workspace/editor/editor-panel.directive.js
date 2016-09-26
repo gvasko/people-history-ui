@@ -26,11 +26,7 @@
 					}
 				}
 				scope.getActionEnvironment = function() {
-					return {
-						initialized: true,
-						selected: scope.selectedRow >= 0,
-						selectedIndex: scope.selectedRow
-					};
+					return new ActionEnvironment(scope.selectedRow);
 				}
 			}
 		};
