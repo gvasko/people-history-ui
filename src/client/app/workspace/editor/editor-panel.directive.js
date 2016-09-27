@@ -26,7 +26,7 @@
 					}
 				}
 				scope.getActionEnvironment = function() {
-					return new PeopleHistory.ActionEnvironment(scope.selectedRow);
+					return new PeopleHistory.Document.ActionEnvironment(scope.selectedRow);
 				}
 			}
 		};

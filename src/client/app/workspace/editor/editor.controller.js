@@ -12,7 +12,7 @@
 		vm.documentId = 1; // TODO
 		// TODO: document and EditorViewModel together sounds as totally different things
 		documentStorage.loadDocument(vm.documentId).then(function(doc) {
-			vm.document = new EditorViewModel(doc);
+			vm.document = new PeopleHistory.Editor.EditorViewModel(doc);
 		});
 	}
 

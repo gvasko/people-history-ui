@@ -1,6 +1,11 @@
 'use strict';
 
-function PanelViewModel(title) {
+var PeopleHistory = PeopleHistory || {};
+if (PeopleHistory.Editor === undefined) {
+	PeopleHistory.Editor = {};
+}
+
+PeopleHistory.Editor.PanelViewModel = function(title) {
 	this.title = title;
 	this.data = {
 		header: [],
@@ -13,12 +18,11 @@ function PanelViewModel(title) {
 	};
 	this.actions = [];
 	this.options = [];
-	this._lastActionEnv = new PeopleHistory.ActionEnvironment();
+	this._lastActionEnv = new PeopleHistory.Document.ActionEnvironment();
 	this._initialized = false;
 }
 
-
-PanelViewModel.prototype.setHeaderMapping = function(headerMap) {
+PeopleHistory.Editor.PanelViewModel.prototype.setHeaderMapping = function(headerMap) {
 	this._headerMap = headerMap;
 	var newHeader = [];
 	for (var prop in this._headerMap) {
@@ -29,7 +33,7 @@ PanelViewModel.prototype.setHeaderMapping = function(headerMap) {
 	this.setHeader(newHeader);
 };
 
-PanelViewModel.prototype.setData = function(recordSet) {
+PeopleHistory.Editor.PanelViewModel.prototype.setData = function(recordSet) {
 	this.clearData();
 	for (var i in recordSet) {
 		var record = recordSet[i];
@@ -50,12 +54,12 @@ PanelViewModel.prototype.setData = function(recordSet) {
 	this._initialized = true;
 };
 
-PanelViewModel.prototype.clearData = function() {
+PeopleHistory.Editor.PanelViewModel.prototype.clearData = function() {
 	this.data.rows.length = 0;
 	this._initialized = false;
 }
 
-PanelViewModel.prototype.setHeader = function(header) {
+PeopleHistory.Editor.PanelViewModel.prototype.setHeader = function(header) {
 	this.data.header.length = 0;
 
 	for (var item in header) {
@@ -65,26 +69,26 @@ PanelViewModel.prototype.setHeader = function(header) {
 	this.clearData();
 };
 
-PanelViewModel.prototype.addRow = function(row) {
+PeopleHistory.Editor.PanelViewModel.prototype.addRow = function(row) {
 	if (row.length != this.data.header.length) {
 		throw "Row should contain " + this.data.header.length + " items, not " + row.length;
 	}
 	this.data.rows.push(row);
 }
 
-PanelViewModel.prototype.registerEventHandler = function(event, handler) {
+PeopleHistory.Editor.PanelViewModel.prototype.registerEventHandler = function(event, handler) {
 	this.eventHandlers[event] = handler;
 }
 
-PanelViewModel.prototype.addAction = function(action) {
+PeopleHistory.Editor.PanelViewModel.prototype.addAction = function(action) {
 	this.actions.push(action);
 }
 
-PanelViewModel.prototype.addOption = function(action) {
+PeopleHistory.Editor.PanelViewModel.prototype.addOption = function(action) {
 	this.options.push(action);
 }
 
-PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
+PeopleHistory.Editor.PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
 	if (actionEnv.isAnySelected) {
 		if (!!this.eventHandlers.rowSelected) {
 			this.eventHandlers.rowSelected(actionEnv.selectedRow);
@@ -97,11 +101,11 @@ PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
 	this._lastActionEnv = actionEnv;
 }
 
-PanelViewModel.prototype.whenInitialized = function(actionEnv) {
+PeopleHistory.Editor.PanelViewModel.prototype.whenInitialized = function(actionEnv) {
 	return this._initialized;
 }
 
-PanelViewModel.prototype.whenAnySelected = function(actionEnv) {
+PeopleHistory.Editor.PanelViewModel.prototype.whenAnySelected = function(actionEnv) {
 	return actionEnv.isAnySelected;
 }
 

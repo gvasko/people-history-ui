@@ -1,8 +1,11 @@
 'use strict';
 
 var PeopleHistory = PeopleHistory || {};
+if (PeopleHistory.Document === undefined) {
+	PeopleHistory.Document = {};
+}
 
-PeopleHistory.PersonalEvent = function(id, what, when, where) {
+PeopleHistory.Document.PersonalEvent = function(id, what, when, where) {
 	this.id = id;
 	this.what = what;
 	this.when = when;
