@@ -1,6 +1,8 @@
 'use strict';
 
-function Person(id, firstName, lastName, email) {
+var PeopleHistory = PeopleHistory || {};
+
+PeopleHistory.Person = function(id, firstName, lastName, email) {
 	this.id = id;
 	this.firstName = firstName;
 	this.lastName = lastName;

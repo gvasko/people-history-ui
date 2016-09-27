@@ -13,7 +13,7 @@ function PanelViewModel(title) {
 	};
 	this.actions = [];
 	this.options = [];
-	this._lastActionEnv = new ActionEnvironment();
+	this._lastActionEnv = new PeopleHistory.ActionEnvironment();
 	this._initialized = false;
 }
 

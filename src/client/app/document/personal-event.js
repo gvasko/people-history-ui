@@ -1,6 +1,8 @@
 'use strict';
 
-function PersonalEvent(id, what, when, where) {
+var PeopleHistory = PeopleHistory || {};
+
+PeopleHistory.PersonalEvent = function(id, what, when, where) {
 	this.id = id;
 	this.what = what;
 	this.when = when;

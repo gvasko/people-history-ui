@@ -2,8 +2,8 @@
 
 // TODO: add namespace
 
-function EditorViewModel(documentViewModel) {
-	this._document = documentViewModel;
+function EditorViewModel(doc) {
+	this._document = doc;
 
 	// TODO: provide header info
 	this.people = new PanelViewModel("People");
@@ -23,10 +23,10 @@ EditorViewModel.prototype.initPeople = function() {
 		email: "E-mail"
 	});
 	this.people.setData(this._document.getAllPeople());
-	this.people.addAction(new Action("Add Person", this.actionAddPerson.bind(this), this.people.whenInitialized.bind(this.people)));
-	this.people.addAction(new Action("Edit", this.actionEditPerson.bind(this), this.people.whenAnySelected.bind(this.people)));
-	this.people.addAction(new Action("Delete", this.actionDeletePerson.bind(this), this.people.whenAnySelected.bind(this.people)));
-	this.people.addOption(new Action("Columns", this.optionPeopleColumns.bind(this), this.people.whenInitialized.bind(this.people)));
+	this.people.addAction(new PeopleHistory.Action("Add Person", this.actionAddPerson.bind(this), this.people.whenInitialized.bind(this.people)));
+	this.people.addAction(new PeopleHistory.Action("Edit", this.actionEditPerson.bind(this), this.people.whenAnySelected.bind(this.people)));
+	this.people.addAction(new PeopleHistory.Action("Delete", this.actionDeletePerson.bind(this), this.people.whenAnySelected.bind(this.people)));
+	this.people.addOption(new PeopleHistory.Action("Columns", this.optionPeopleColumns.bind(this), this.people.whenInitialized.bind(this.people)));
 	this.people.registerEventHandler('rowSelected', this.selectPerson.bind(this))
 	this.people.registerEventHandler('selectionCleared', this.unselectPerson.bind(this))
 };
@@ -37,11 +37,11 @@ EditorViewModel.prototype.initPersonalEvents = function() {
 		when: "When",
 		where: "Where"
 	});
-	this.personalEvents.addAction(new Action("Add Event", this.actionAddPersonalEvent.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
-	this.personalEvents.addAction(new Action("Edit", this.actionEditPersonalEvent.bind(this), this.people.whenAnySelected.bind(this.personalEvents)));
-	this.personalEvents.addAction(new Action("Delete", this.actionDeletePersonalEvent.bind(this), this.people.whenAnySelected.bind(this.personalEvents)));
-	this.personalEvents.addOption(new Action("Columns", this.optionPersonalEventsColumns.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
-	this.personalEvents.addOption(new Action("Event Types", this.optionPersonalEventsEventTypes.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
+	this.personalEvents.addAction(new PeopleHistory.Action("Add Event", this.actionAddPersonalEvent.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
+	this.personalEvents.addAction(new PeopleHistory.Action("Edit", this.actionEditPersonalEvent.bind(this), this.people.whenAnySelected.bind(this.personalEvents)));
+	this.personalEvents.addAction(new PeopleHistory.Action("Delete", this.actionDeletePersonalEvent.bind(this), this.people.whenAnySelected.bind(this.personalEvents)));
+	this.personalEvents.addOption(new PeopleHistory.Action("Columns", this.optionPersonalEventsColumns.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
+	this.personalEvents.addOption(new PeopleHistory.Action("Event Types", this.optionPersonalEventsEventTypes.bind(this), this.people.whenInitialized.bind(this.personalEvents)));
 	this.personalEvents.registerEventHandler('rowSelected', this.selectPersonalEvent.bind(this))
 	this.personalEvents.registerEventHandler('selectionCleared', this.unselectPersonalEvent.bind(this))
 };
@@ -51,11 +51,11 @@ EditorViewModel.prototype.initRelationships = function() {
 		type: "Type",
 		who: "Who"
 	});
-	this.relationships.addAction(new Action("Add Relationship", this.actionAddRelationship.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
-	this.relationships.addAction(new Action("Edit", this.actionEditRelationship.bind(this), this.relationships.whenAnySelected.bind(this.relationships)));
-	this.relationships.addAction(new Action("Delete", this.actionDeleteRelationship.bind(this), this.relationships.whenAnySelected.bind(this.relationships)));
-	this.relationships.addOption(new Action("Columns", this.optionRelationshipsColumns.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
-	this.relationships.addOption(new Action("Relation Types", this.optionRelationshipsRelationTypes.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
+	this.relationships.addAction(new PeopleHistory.Action("Add Relationship", this.actionAddRelationship.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
+	this.relationships.addAction(new PeopleHistory.Action("Edit", this.actionEditRelationship.bind(this), this.relationships.whenAnySelected.bind(this.relationships)));
+	this.relationships.addAction(new PeopleHistory.Action("Delete", this.actionDeleteRelationship.bind(this), this.relationships.whenAnySelected.bind(this.relationships)));
+	this.relationships.addOption(new PeopleHistory.Action("Columns", this.optionRelationshipsColumns.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
+	this.relationships.addOption(new PeopleHistory.Action("Relation Types", this.optionRelationshipsRelationTypes.bind(this), this.relationships.whenInitialized.bind(this.relationships)));
 	this.relationships.registerEventHandler('rowSelected', this.selectRelationship.bind(this))
 	this.relationships.registerEventHandler('selectionCleared', this.unselectRelationship.bind(this))
 };
