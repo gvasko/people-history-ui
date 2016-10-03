@@ -30,7 +30,7 @@ PeopleHistory.Editor.PanelViewModel.prototype.setHeaderMapping = function(header
 			newHeader.push(this._headerMap[prop]);
 		}
 	}
-	this.setHeader(newHeader);
+	this._setHeader(newHeader);
 };
 
 PeopleHistory.Editor.PanelViewModel.prototype.setData = function(recordSet) {
@@ -59,7 +59,7 @@ PeopleHistory.Editor.PanelViewModel.prototype.clearData = function() {
 	this._initialized = false;
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.setHeader = function(header) {
+PeopleHistory.Editor.PanelViewModel.prototype._setHeader = function(header) {
 	this.data.header.length = 0;
 
 	for (var item in header) {
@@ -69,8 +69,16 @@ PeopleHistory.Editor.PanelViewModel.prototype.setHeader = function(header) {
 	this.clearData();
 };
 
+PeopleHistory.Editor.PanelViewModel.prototype.getColumnCount = function() {
+	return this.data.header.length;
+}
+
+PeopleHistory.Editor.PanelViewModel.prototype.getRowCount = function() {
+	return this.data.rows.length;
+}
+
 PeopleHistory.Editor.PanelViewModel.prototype.addRow = function(row) {
-	if (row.length != this.data.header.length) {
+	if (row.length !== this.data.header.length) {
 		throw "Row should contain " + this.data.header.length + " items, not " + row.length;
 	}
 	this.data.rows.push(row);
