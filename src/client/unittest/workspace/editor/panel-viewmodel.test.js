@@ -92,15 +92,79 @@ describe("Editor Panel ViewModel", function() {
 	describe("Event Handling", function() {
 
 		it("single event handler stored", function() {
+			var dummyHandler1 = function() {};
+			var dummyHandler2 = function() {};
+			sutPanelVM.registerEventHandler("rowSelected", dummyHandler1);
+			// TODO: getter?
+			expect(sutPanelVM.eventHandlers.rowSelected).toBe(dummyHandler1);
+			sutPanelVM.registerEventHandler("rowSelected", dummyHandler2);
+			expect(sutPanelVM.eventHandlers.rowSelected).toBe(dummyHandler2);
+		});
+
+		it("registering for undeclared event throws exception", function() {
+			expect(function() {
+				var dummyHandler = function() {};
+				sutPanelVM.registerEventHandler("undeclaredEvent", dummyHandler);
+			}).toThrow();
+		});
+
+		describe("Selection", function() {
+			beforeEach(function() {
+				sutPanelVM.setHeaderMapping({
+					foo: "Foo",
+					bar: "Bar"
+				});
+
+				sutPanelVM.addRow(["foo", "bar"]);
+			});
 
 		});
 
 		it("when selection changes then it calls rowSelected", function() {
+			var haveBeenCalledWith = [];
+			var spyEventHandler = function(row) {
+				haveBeenCalledWith.push(row);
+			};
 
+			sutPanelVM.registerEventHandler("rowSelected", spyEventHandler);
+
+			sutPanelVM.eventHandlers.selectionChanged(
+					new PeopleHistory.Document.ActionEnvironment(0));
+
+			expect(haveBeenCalledWith.length).toEqual(1);
+			expect(haveBeenCalledWith[0]).toEqual(0);
 		});
 
-		it("when unselection then it call selectionCleared", function() {
+		it("when unselection then it calls selectionCleared", function() {
+			var haveBeenCalledCount = 0;
+			var spyEventHandler = function() {
+				haveBeenCalledCount++;
+			};
 
+			sutPanelVM.registerEventHandler("selectionCleared", spyEventHandler);
+
+			sutPanelVM.eventHandlers.selectionChanged(
+					new PeopleHistory.Document.ActionEnvironment(0));
+			sutPanelVM.eventHandlers.selectionChanged(
+					new PeopleHistory.Document.ActionEnvironment());
+
+			expect(haveBeenCalledCount).toEqual(1);
+		});
+
+		it("when data is cleaned then it calls selectionCleared", function() {
+			var haveBeenCalledCount = 0;
+			var spyEventHandler = function() {
+				haveBeenCalledCount++;
+			};
+
+			sutPanelVM.registerEventHandler("selectionCleared", spyEventHandler);
+
+			sutPanelVM.eventHandlers.selectionChanged(
+					new PeopleHistory.Document.ActionEnvironment(0));
+
+			sutPanelVM.clearData();
+			
+			expect(haveBeenCalledCount).toEqual(1);
 		});
 
 	});

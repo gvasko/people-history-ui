@@ -55,6 +55,9 @@ PeopleHistory.Editor.PanelViewModel.prototype.setData = function(recordSet) {
 };
 
 PeopleHistory.Editor.PanelViewModel.prototype.clearData = function() {
+	if (this.whenAnySelected()) {
+		this.eventHandlers.selectionChanged(new PeopleHistory.Document.ActionEnvironment());
+	}
 	this.data.rows.length = 0;
 	this._initialized = false;
 }
@@ -85,7 +88,11 @@ PeopleHistory.Editor.PanelViewModel.prototype.addRow = function(row) {
 }
 
 PeopleHistory.Editor.PanelViewModel.prototype.registerEventHandler = function(event, handler) {
-	this.eventHandlers[event] = handler;
+	if (this.eventHandlers.hasOwnProperty(event)) {
+		this.eventHandlers[event] = handler;
+	} else {
+		throw "Event not found: " + event;
+	}
 }
 
 PeopleHistory.Editor.PanelViewModel.prototype.addAction = function(action) {
@@ -114,6 +121,10 @@ PeopleHistory.Editor.PanelViewModel.prototype.whenInitialized = function(actionE
 }
 
 PeopleHistory.Editor.PanelViewModel.prototype.whenAnySelected = function(actionEnv) {
-	return actionEnv.isAnySelected;
+	if (actionEnv === undefined) {
+		return this._lastActionEnv.isAnySelected;
+	} else {
+		return actionEnv.isAnySelected;
+	}
 }
 
