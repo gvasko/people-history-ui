@@ -10,9 +10,8 @@
 	function Editor(documentStorage) {
 		var vm = this;
 		vm.documentId = 1; // TODO
-		// TODO: document and EditorViewModel together sounds as totally different things
 		documentStorage.loadDocument(vm.documentId).then(function(doc) {
-			vm.document = new PeopleHistory.Editor.EditorViewModel(doc);
+			vm.editorVM = new PeopleHistory.Editor.EditorViewModel(doc);
 		});
 	}
 
