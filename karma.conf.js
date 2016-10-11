@@ -1,6 +1,7 @@
 
 module.exports = function(config) {
 	config.set({
+		logLevel: config.LOG_INFO,
 		basepath: '',
 		frameworks: ['jasmine'],
 		files: [
@@ -10,21 +11,25 @@ module.exports = function(config) {
 			'src/client/app/app.module.js',
 			'src/client/app/**/*.module.js',
 			'src/client/app/**/*.js',
-			'src/client/unittest/**/*.test.js'
+			'src/client/test/**/*.test.js',
+			'src/client/**/*.html'
 		],
 		exclude: [
 		],
 		preprocessors: {
+			'**/*.html': 'ng-html2js'
 		},
 		reporters: ['spec'],
-		port: 9876,
 		colors: true,
-		logLevel: config.LOG_INFO,
 		autoWatch: true,
 		browsers: ['Chrome'],
 		hostname: process.env.IP,
 		port: process.env.PORT,
 		runnerPort: 0,
-		singleRun: false
-	})
+		singleRun: false,
+		ngHtml2JsPreprocessor: {
+			stripPrefix: 'src/client/',
+			moduleName: 'templates'
+		}
+    });
 }

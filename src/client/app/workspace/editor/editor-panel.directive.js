@@ -9,6 +9,7 @@
 		var directive = {
 			scope: {
 				'vm': '=',
+				'name': '='
 			},
 			templateUrl: 'app/workspace/editor/editor-panel.html',
 			restrict: 'E',

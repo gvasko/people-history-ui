@@ -3,6 +3,7 @@
   "description": "People History Modeling Tool",
   "version": "0.1.0",
   "dependencies": {
+    "jquery": "^2",
     "angular": "1.5.x",
     "angular-resource": "1.5.x",
     "angular-route": "1.5.x",
@@ -11,7 +12,6 @@
     "angular-mocks": "1.5.x",
     "angular-ui-grid": "3.2.x",
     "bootstrap": "^3",
-    "jquery": "^2",
     "underscore": "*"
   },
   "resolutions": {

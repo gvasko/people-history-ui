@@ -1,12 +1,12 @@
 <div class="row" ng-controller="Editor as vm">
 	<div class="col-sm-6">
-		<ph-editor-panel vm="vm.editorVM.peoplePanelVM" />
-		<ph-editor-panel vm="vm.editorVM.personalEventsPanelVM" />
+		<ph-editor-panel name="people" vm="vm.editorVM.peoplePanelVM" />
+		<ph-editor-panel name="personalEvents" vm="vm.editorVM.personalEventsPanelVM" />
 	</div>
 
 	<div class="col-sm-6">
-		<ph-editor-panel vm="vm.editorVM.relationshipsPanelVM" />
-		<ph-editor-panel vm="vm.editorVM.relationshipEventsPanelVM" />
+		<ph-editor-panel name="relationships" vm="vm.editorVM.relationshipsPanelVM" />
+		<ph-editor-panel name="relationshipEvents" vm="vm.editorVM.relationshipEventsPanelVM" />
 	</div>
 
 </div>
