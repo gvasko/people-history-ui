@@ -11,7 +11,7 @@ module.exports = function(config) {
 			'src/client/app/app.module.js',
 			'src/client/app/**/*.module.js',
 			'src/client/app/**/*.js',
-			'src/client/test/**/*.test.js',
+			'src/client/test/**/*.js',
 			'src/client/**/*.html'
 		],
 		exclude: [
