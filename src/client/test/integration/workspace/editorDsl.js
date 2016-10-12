@@ -47,8 +47,8 @@ PeopleHistory.TestUtils.EditorDSL.prototype.navButton = function(name) {
 	return this;
 }
 
-PeopleHistory.TestUtils.EditorDSL.prototype.tableRow = function(rowIndex) {
-	var row = "tbody tr :eq(" + rowIndex + ")";
+PeopleHistory.TestUtils.EditorDSL.prototype.tableFirstCellInRow = function(rowIndex) {
+	var row = "tbody tr:eq(" + rowIndex + ") td:first";
 	this.jqElement = $(this.jqElement).find(row);
 	return this;
 }

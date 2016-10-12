@@ -28,6 +28,11 @@ describe("Editor Integration Test", function() {
 		};
 
 	});
+
+	afterEach(function() {
+		$rootScope.$destroy();
+		editorElement.remove();
+	});
 	
 	describe("When initialized", function() {
 
@@ -76,7 +81,7 @@ describe("Editor Integration Test", function() {
 		describe("When selecting a person", function() {
 
 			beforeEach(function() {
-				EditorDSL().panel("people").tableRow(1).click();
+				EditorDSL().panel("people").tableFirstCellInRow(1).click();
 			});
 
 			it("Then person can be edited and deleted", function() {
@@ -100,7 +105,7 @@ describe("Editor Integration Test", function() {
 			describe("When selecting another person", function() {
 
 				beforeEach(function() {
-					EditorDSL().panel("people").tableRow(2).click();
+					EditorDSL().panel("people").tableFirstCellInRow(2).click();
 				});
 
 				// TODO: duplicated
@@ -127,7 +132,7 @@ describe("Editor Integration Test", function() {
 			describe("When unselecting the person", function() {
 
 				beforeEach(function() {
-					EditorDSL().panel("people").tableRow(1).click();
+					EditorDSL().panel("people").tableFirstCellInRow(1).click();
 				});
 
 			// TODO: duplicated
