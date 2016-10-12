@@ -47,9 +47,17 @@ PeopleHistory.TestUtils.EditorDSL.prototype.navButton = function(name) {
 	return this;
 }
 
-PeopleHistory.TestUtils.EditorDSL.prototype.tableFirstCellInRow = function(rowIndex) {
-	var row = "tbody tr:eq(" + rowIndex + ") td:first";
+PeopleHistory.TestUtils.EditorDSL.prototype.tableRow = function(rowIndex) {
+	var row = "tbody tr";
+	if (!!rowIndex) {
+		row += ":eq(" + rowIndex + ")";
+	}
 	this.jqElement = $(this.jqElement).find(row);
+	return this;
+}
+
+PeopleHistory.TestUtils.EditorDSL.prototype.firstCell = function() {
+	this.jqElement = $(this.jqElement).find("td:first");
 	return this;
 }
 

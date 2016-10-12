@@ -81,7 +81,7 @@ describe("Editor Integration Test", function() {
 		describe("When selecting a person", function() {
 
 			beforeEach(function() {
-				EditorDSL().panel("people").tableFirstCellInRow(1).click();
+				EditorDSL().panel("people").tableRow(1).firstCell().click();
 			});
 
 			it("Then person can be edited and deleted", function() {
@@ -102,10 +102,18 @@ describe("Editor Integration Test", function() {
 				expect(EditorDSL().panel("relationships").navButton("Delete").enabled()).toBeFalsy();
 			});
 
+			it("Then we get 3 personal-events", function() {
+				expect(EditorDSL().panel("personalEvents").tableRow().count()).toEqual(3);
+			});
+
+			it("Then we get 3 relationships", function() {
+				expect(EditorDSL().panel("relationships").tableRow().count()).toEqual(3);
+			});
+
 			describe("When selecting another person", function() {
 
 				beforeEach(function() {
-					EditorDSL().panel("people").tableFirstCellInRow(2).click();
+					EditorDSL().panel("people").tableRow(2).firstCell().click();
 				});
 
 				// TODO: duplicated
@@ -132,27 +140,35 @@ describe("Editor Integration Test", function() {
 			describe("When unselecting the person", function() {
 
 				beforeEach(function() {
-					EditorDSL().panel("people").tableFirstCellInRow(1).click();
+					EditorDSL().panel("people").tableRow(1).firstCell().click();
 				});
 
-			// TODO: duplicated
-			it("Then person can be added only", function() {
-				expect(EditorDSL().panel("people").navButton("Add Person").enabled()).toBeTruthy();
-				expect(EditorDSL().panel("people").navButton("Edit").enabled()).toBeFalsy();
-				expect(EditorDSL().panel("people").navButton("Delete").enabled()).toBeFalsy();
-			});
+				// TODO: duplicated
+				it("Then person can be added only", function() {
+					expect(EditorDSL().panel("people").navButton("Add Person").enabled()).toBeTruthy();
+					expect(EditorDSL().panel("people").navButton("Edit").enabled()).toBeFalsy();
+					expect(EditorDSL().panel("people").navButton("Delete").enabled()).toBeFalsy();
+				});
 
-			it("Then no action is available for PersonalEvents", function() {
-				expect(EditorDSL().panel("personalEvents").navButton("Add Event").enabled()).toBeFalsy();
-				expect(EditorDSL().panel("personalEvents").navButton("Edit").enabled()).toBeFalsy();
-				expect(EditorDSL().panel("personalEvents").navButton("Delete").enabled()).toBeFalsy();
-			});
+				it("Then no action is available for PersonalEvents", function() {
+					expect(EditorDSL().panel("personalEvents").navButton("Add Event").enabled()).toBeFalsy();
+					expect(EditorDSL().panel("personalEvents").navButton("Edit").enabled()).toBeFalsy();
+					expect(EditorDSL().panel("personalEvents").navButton("Delete").enabled()).toBeFalsy();
+				});
 
-			it("Then no action is available for Relationships", function() {
-				expect(EditorDSL().panel("relationships").navButton("Add Relationship").enabled()).toBeFalsy();
-				expect(EditorDSL().panel("relationships").navButton("Edit").enabled()).toBeFalsy();
-				expect(EditorDSL().panel("relationships").navButton("Delete").enabled()).toBeFalsy();
-			});
+				it("Then no action is available for Relationships", function() {
+					expect(EditorDSL().panel("relationships").navButton("Add Relationship").enabled()).toBeFalsy();
+					expect(EditorDSL().panel("relationships").navButton("Edit").enabled()).toBeFalsy();
+					expect(EditorDSL().panel("relationships").navButton("Delete").enabled()).toBeFalsy();
+				});
+
+				it("Then we get no personal-events", function() {
+					expect(EditorDSL().panel("personalEvents").tableRow().count()).toEqual(0);
+				});
+
+				it("Then we get no relationships", function() {
+					expect(EditorDSL().panel("relationships").tableRow().count()).toEqual(0);
+				});
 
 
 			});
