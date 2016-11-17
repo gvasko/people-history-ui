@@ -19,6 +19,10 @@ PeopleHistory.TestUtils.EditorDSL.prototype.enabled = function() {
 	return !this.jqElement.prop("disabled");
 }
 
+PeopleHistory.TestUtils.EditorDSL.prototype.rowSelected = function() {
+	return this.jqElement.hasClass("info");
+}
+
 // Actions
 
 PeopleHistory.TestUtils.EditorDSL.prototype.click = function() {

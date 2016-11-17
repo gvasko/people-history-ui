@@ -128,8 +128,8 @@ describe("Editor Panel ViewModel", function() {
 
 			sutPanelVM.registerEventHandler("rowSelected", spyEventHandler);
 
-			sutPanelVM.eventHandlers.selectionChanged(
-					new PeopleHistory.Document.ActionEnvironment(0));
+			sutPanelVM.actionEnvironment.select(0);
+			sutPanelVM.eventHandlers.selectionChanged();
 
 			expect(haveBeenCalledWith.length).toEqual(1);
 			expect(haveBeenCalledWith[0]).toEqual(0);
@@ -143,10 +143,10 @@ describe("Editor Panel ViewModel", function() {
 
 			sutPanelVM.registerEventHandler("selectionCleared", spyEventHandler);
 
-			sutPanelVM.eventHandlers.selectionChanged(
-					new PeopleHistory.Document.ActionEnvironment(0));
-			sutPanelVM.eventHandlers.selectionChanged(
-					new PeopleHistory.Document.ActionEnvironment());
+			sutPanelVM.actionEnvironment.select(0);
+			sutPanelVM.eventHandlers.selectionChanged();
+			sutPanelVM.actionEnvironment.clearSelection();
+			sutPanelVM.eventHandlers.selectionChanged();
 
 			expect(haveBeenCalledCount).toEqual(1);
 		});

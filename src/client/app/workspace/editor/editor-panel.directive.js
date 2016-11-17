@@ -15,19 +15,12 @@
 			restrict: 'E',
 			link: function(scope) {
 				scope.selectRow = function(row) {
-					if (scope.selectedRow === row) {
-						scope.selectedRow = -1;
-					} else {
-						scope.selectedRow = row;
-					}
+					scope.vm.actionEnvironment.toggleSelection(row);
 					if (!!scope.vm.eventHandlers.selectionChanged) {
-						scope.vm.eventHandlers.selectionChanged(scope.getActionEnvironment());
+						scope.vm.eventHandlers.selectionChanged(scope.vm.actionEnvironment);
 					} else {
 						console.log("Event handler not found for selectionChanged");
 					}
-				}
-				scope.getActionEnvironment = function() {
-					return new PeopleHistory.Document.ActionEnvironment(scope.selectedRow);
 				}
 			}
 		};

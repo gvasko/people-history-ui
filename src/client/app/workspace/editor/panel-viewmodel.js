@@ -18,7 +18,7 @@ PeopleHistory.Editor.PanelViewModel = function(title) {
 	};
 	this.actions = [];
 	this.options = [];
-	this._lastActionEnv = new PeopleHistory.Document.ActionEnvironment();
+	this.actionEnvironment = new PeopleHistory.Document.ActionEnvironment();
 	this._initialized = false;
 }
 
@@ -55,8 +55,10 @@ PeopleHistory.Editor.PanelViewModel.prototype.setData = function(recordSet) {
 };
 
 PeopleHistory.Editor.PanelViewModel.prototype.clearData = function() {
-	if (this.whenAnySelected()) {
-		this.eventHandlers.selectionChanged(new PeopleHistory.Document.ActionEnvironment());
+	var wasSelected = this.whenAnySelected();
+	this.actionEnvironment.clearSelection();
+	if (wasSelected) {
+		this.eventHandlers.selectionChanged();
 	}
 	this.data.rows.length = 0;
 	this._initialized = false;
@@ -103,28 +105,23 @@ PeopleHistory.Editor.PanelViewModel.prototype.addOption = function(action) {
 	this.options.push(action);
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.eventHandlerSelectionChanged = function(actionEnv) {
-	if (actionEnv.isAnySelected) {
+PeopleHistory.Editor.PanelViewModel.prototype.eventHandlerSelectionChanged = function() {
+	if (this.actionEnvironment.isAnySelected()) {
 		if (!!this.eventHandlers.rowSelected) {
-			this.eventHandlers.rowSelected(actionEnv.selectedRow);
+			this.eventHandlers.rowSelected(this.actionEnvironment.getSelectedRowIndex());
 		}
 	} else {
 		if (!!this.eventHandlers.selectionCleared) {
 			this.eventHandlers.selectionCleared();
 		}
 	}
-	this._lastActionEnv = actionEnv;
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.whenInitialized = function(actionEnv) {
+PeopleHistory.Editor.PanelViewModel.prototype.whenInitialized = function() {
 	return this._initialized;
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.whenAnySelected = function(actionEnv) {
-	if (actionEnv === undefined) {
-		return this._lastActionEnv.isAnySelected;
-	} else {
-		return actionEnv.isAnySelected;
-	}
+PeopleHistory.Editor.PanelViewModel.prototype.whenAnySelected = function() {
+	return this.actionEnvironment.isAnySelected();
 }
 

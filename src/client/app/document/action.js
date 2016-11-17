@@ -14,6 +14,32 @@ PeopleHistory.Document.Action = function(name, action, enabled) {
 PeopleHistory.Document.ActionEnvironment = function(selectedRow) {
 	var row = selectedRow !== undefined ? selectedRow : -1;
 	this.selectedRow = row;
-	this.isAnySelected = row >= 0;
 }
 
+PeopleHistory.Document.ActionEnvironment.prototype.clearSelection = function() {
+	this.selectedRow = -1;
+}
+
+PeopleHistory.Document.ActionEnvironment.prototype.select = function(row) {
+	this.selectedRow = row;
+}
+
+PeopleHistory.Document.ActionEnvironment.prototype.isAnySelected = function() {
+	return this.selectedRow >= 0;
+}
+
+PeopleHistory.Document.ActionEnvironment.prototype.isUnselected = function() {
+	return !this.isAnySelected();
+}
+
+PeopleHistory.Document.ActionEnvironment.prototype.getSelectedRowIndex = function() {
+	return this.selectedRow;
+}
+
+PeopleHistory.Document.ActionEnvironment.prototype.toggleSelection = function(row) {
+	if (this.selectedRow === row) {
+		this.clearSelection();
+	} else {
+		this.select(row);
+	}
+}

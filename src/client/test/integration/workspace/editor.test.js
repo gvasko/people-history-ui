@@ -84,6 +84,10 @@ describe("Editor Integration Test", function() {
 				EditorDSL().panel("people").tableRow(1).firstCell().click();
 			});
 
+			it("Then person is selected", function() {
+				expect(EditorDSL().panel("people").tableRow(1).rowSelected()).toBeTruthy();
+			});
+
 			it("Then person can be edited and deleted", function() {
 				expect(EditorDSL().panel("people").navButton("Add Person").enabled()).toBeTruthy();
 				expect(EditorDSL().panel("people").navButton("Edit").enabled()).toBeTruthy();
@@ -170,6 +174,19 @@ describe("Editor Integration Test", function() {
 					expect(EditorDSL().panel("relationships").tableRow().count()).toEqual(0);
 				});
 
+			});
+
+			describe("and selecting an event, unselecting the person and selecting again", function() {
+
+				beforeEach(function() {
+					EditorDSL().panel("personalEvents").tableRow(1).firstCell().click();
+					EditorDSL().panel("people").tableRow(1).firstCell().click();
+					EditorDSL().panel("people").tableRow(1).firstCell().click();
+				});
+
+				it("Then no event is selected", function() {
+					expect(EditorDSL().panel("personalEvents").tableRow(1).rowSelected()).toBeFalsy();
+				});
 
 			});
 
