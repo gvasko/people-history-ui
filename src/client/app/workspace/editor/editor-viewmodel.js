@@ -30,8 +30,8 @@ PeopleHistory.Editor.EditorViewModel.prototype.initPeople = function() {
 	this.peoplePanelVM.addAction(new PeopleHistory.Document.Action("Edit", this.actionEditPerson.bind(this), this.peoplePanelVM.whenAnySelected.bind(this.peoplePanelVM)));
 	this.peoplePanelVM.addAction(new PeopleHistory.Document.Action("Delete", this.actionDeletePerson.bind(this), this.peoplePanelVM.whenAnySelected.bind(this.peoplePanelVM)));
 	this.peoplePanelVM.addOption(new PeopleHistory.Document.Action("Columns", this.optionPeopleColumns.bind(this), this.peoplePanelVM.whenInitialized.bind(this.peoplePanelVM)));
-	this.peoplePanelVM.registerEventHandler('rowSelected', this.selectPerson.bind(this))
-	this.peoplePanelVM.registerEventHandler('selectionCleared', this.unselectPerson.bind(this))
+	this.peoplePanelVM.eventDispatcher.registerEventHandler('rowSelected', this.selectPerson.bind(this))
+	this.peoplePanelVM.eventDispatcher.registerEventHandler('selectionCleared', this.unselectPerson.bind(this))
 };
 
 PeopleHistory.Editor.EditorViewModel.prototype.initPersonalEvents = function() {
@@ -45,8 +45,8 @@ PeopleHistory.Editor.EditorViewModel.prototype.initPersonalEvents = function() {
 	this.personalEventsPanelVM.addAction(new PeopleHistory.Document.Action("Delete", this.actionDeletePersonalEvent.bind(this), this.peoplePanelVM.whenAnySelected.bind(this.personalEventsPanelVM)));
 	this.personalEventsPanelVM.addOption(new PeopleHistory.Document.Action("Columns", this.optionPersonalEventsColumns.bind(this), this.peoplePanelVM.whenInitialized.bind(this.personalEventsPanelVM)));
 	this.personalEventsPanelVM.addOption(new PeopleHistory.Document.Action("Event Types", this.optionPersonalEventsEventTypes.bind(this), this.peoplePanelVM.whenInitialized.bind(this.personalEventsPanelVM)));
-	this.personalEventsPanelVM.registerEventHandler('rowSelected', this.selectPersonalEvent.bind(this))
-	this.personalEventsPanelVM.registerEventHandler('selectionCleared', this.unselectPersonalEvent.bind(this))
+	this.personalEventsPanelVM.eventDispatcher.registerEventHandler('rowSelected', this.selectPersonalEvent.bind(this))
+	this.personalEventsPanelVM.eventDispatcher.registerEventHandler('selectionCleared', this.unselectPersonalEvent.bind(this))
 };
 
 PeopleHistory.Editor.EditorViewModel.prototype.initRelationships = function() {
@@ -59,8 +59,8 @@ PeopleHistory.Editor.EditorViewModel.prototype.initRelationships = function() {
 	this.relationshipsPanelVM.addAction(new PeopleHistory.Document.Action("Delete", this.actionDeleteRelationship.bind(this), this.relationshipsPanelVM.whenAnySelected.bind(this.relationshipsPanelVM)));
 	this.relationshipsPanelVM.addOption(new PeopleHistory.Document.Action("Columns", this.optionRelationshipsColumns.bind(this), this.relationshipsPanelVM.whenInitialized.bind(this.relationshipsPanelVM)));
 	this.relationshipsPanelVM.addOption(new PeopleHistory.Document.Action("Relation Types", this.optionRelationshipsRelationTypes.bind(this), this.relationshipsPanelVM.whenInitialized.bind(this.relationshipsPanelVM)));
-	this.relationshipsPanelVM.registerEventHandler('rowSelected', this.selectRelationship.bind(this))
-	this.relationshipsPanelVM.registerEventHandler('selectionCleared', this.unselectRelationship.bind(this))
+	this.relationshipsPanelVM.eventDispatcher.registerEventHandler('rowSelected', this.selectRelationship.bind(this))
+	this.relationshipsPanelVM.eventDispatcher.registerEventHandler('selectionCleared', this.unselectRelationship.bind(this))
 };
 
 PeopleHistory.Editor.EditorViewModel.prototype.selectPerson = function(row) {

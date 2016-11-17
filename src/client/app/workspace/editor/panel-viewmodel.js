@@ -11,14 +11,9 @@ PeopleHistory.Editor.PanelViewModel = function(title) {
 		header: [],
 		rows: []
 	};
-	this.eventHandlers = {
-		selectionChanged: this.eventHandlerSelectionChanged.bind(this),
-		rowSelected: null,
-		selectionCleared: null
-	};
+	this.eventDispatcher = new PeopleHistory.Editor.PanelEventDispathcer();
 	this.actions = [];
 	this.options = [];
-	this.actionEnvironment = new PeopleHistory.Document.ActionEnvironment();
 	this._initialized = false;
 }
 
@@ -55,11 +50,7 @@ PeopleHistory.Editor.PanelViewModel.prototype.setData = function(recordSet) {
 };
 
 PeopleHistory.Editor.PanelViewModel.prototype.clearData = function() {
-	var wasSelected = this.whenAnySelected();
-	this.actionEnvironment.clearSelection();
-	if (wasSelected) {
-		this.eventHandlers.selectionChanged();
-	}
+	this.eventDispatcher.clearSelection();
 	this.data.rows.length = 0;
 	this._initialized = false;
 }
@@ -89,14 +80,6 @@ PeopleHistory.Editor.PanelViewModel.prototype.addRow = function(row) {
 	this.data.rows.push(row);
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.registerEventHandler = function(event, handler) {
-	if (this.eventHandlers.hasOwnProperty(event)) {
-		this.eventHandlers[event] = handler;
-	} else {
-		throw "Event not found: " + event;
-	}
-}
-
 PeopleHistory.Editor.PanelViewModel.prototype.addAction = function(action) {
 	this.actions.push(action);
 }
@@ -105,23 +88,18 @@ PeopleHistory.Editor.PanelViewModel.prototype.addOption = function(action) {
 	this.options.push(action);
 }
 
-PeopleHistory.Editor.PanelViewModel.prototype.eventHandlerSelectionChanged = function() {
-	if (this.actionEnvironment.isAnySelected()) {
-		if (!!this.eventHandlers.rowSelected) {
-			this.eventHandlers.rowSelected(this.actionEnvironment.getSelectedRowIndex());
-		}
-	} else {
-		if (!!this.eventHandlers.selectionCleared) {
-			this.eventHandlers.selectionCleared();
-		}
-	}
-}
-
 PeopleHistory.Editor.PanelViewModel.prototype.whenInitialized = function() {
 	return this._initialized;
 }
 
 PeopleHistory.Editor.PanelViewModel.prototype.whenAnySelected = function() {
-	return this.actionEnvironment.isAnySelected();
+	return this.eventDispatcher.actionEnvironment.isAnySelected();
 }
 
+PeopleHistory.Editor.PanelViewModel.prototype.isSelected = function(row) {
+	return this.eventDispatcher.actionEnvironment.isSelected(row);
+}
+
+PeopleHistory.Editor.PanelViewModel.prototype.toggleRow = function(row) {
+	this.eventDispatcher.selectRow(row);
+}

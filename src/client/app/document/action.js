@@ -24,12 +24,12 @@ PeopleHistory.Document.ActionEnvironment.prototype.select = function(row) {
 	this.selectedRow = row;
 }
 
-PeopleHistory.Document.ActionEnvironment.prototype.isAnySelected = function() {
-	return this.selectedRow >= 0;
+PeopleHistory.Document.ActionEnvironment.prototype.isSelected = function(row) {
+	return this.selectedRow === row;
 }
 
-PeopleHistory.Document.ActionEnvironment.prototype.isUnselected = function() {
-	return !this.isAnySelected();
+PeopleHistory.Document.ActionEnvironment.prototype.isAnySelected = function() {
+	return this.selectedRow >= 0;
 }
 
 PeopleHistory.Document.ActionEnvironment.prototype.getSelectedRowIndex = function() {

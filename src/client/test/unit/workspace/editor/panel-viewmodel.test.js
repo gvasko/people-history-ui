@@ -15,7 +15,7 @@ describe("Editor Panel ViewModel", function() {
 		expect(sutPanelVM.data).toBeDefined();
 		expect(sutPanelVM.data.header).toBeDefined();
 		expect(sutPanelVM.data.rows).toBeDefined();
-		expect(sutPanelVM.eventHandlers).toBeDefined();
+		expect(sutPanelVM.eventDispatcher).toBeDefined();
 		expect(sutPanelVM.actions).toBeDefined();
 		expect(sutPanelVM.options).toBeDefined();
 	});
@@ -90,21 +90,22 @@ describe("Editor Panel ViewModel", function() {
 	});
 
 	describe("Event Handling", function() {
+		// TODO: isolate eventDispatcher
 
 		it("single event handler stored", function() {
 			var dummyHandler1 = function() {};
 			var dummyHandler2 = function() {};
-			sutPanelVM.registerEventHandler("rowSelected", dummyHandler1);
+			sutPanelVM.eventDispatcher.registerEventHandler("rowSelected", dummyHandler1);
 			// TODO: getter?
-			expect(sutPanelVM.eventHandlers.rowSelected).toBe(dummyHandler1);
-			sutPanelVM.registerEventHandler("rowSelected", dummyHandler2);
-			expect(sutPanelVM.eventHandlers.rowSelected).toBe(dummyHandler2);
+			expect(sutPanelVM.eventDispatcher.eventHandlers.rowSelected).toBe(dummyHandler1);
+			sutPanelVM.eventDispatcher.registerEventHandler("rowSelected", dummyHandler2);
+			expect(sutPanelVM.eventDispatcher.eventHandlers.rowSelected).toBe(dummyHandler2);
 		});
 
 		it("registering for undeclared event throws exception", function() {
 			expect(function() {
 				var dummyHandler = function() {};
-				sutPanelVM.registerEventHandler("undeclaredEvent", dummyHandler);
+				sutPanelVM.eventDispatcher.registerEventHandler("undeclaredEvent", dummyHandler);
 			}).toThrow();
 		});
 
@@ -126,10 +127,9 @@ describe("Editor Panel ViewModel", function() {
 				haveBeenCalledWith.push(row);
 			};
 
-			sutPanelVM.registerEventHandler("rowSelected", spyEventHandler);
+			sutPanelVM.eventDispatcher.registerEventHandler("rowSelected", spyEventHandler);
 
-			sutPanelVM.actionEnvironment.select(0);
-			sutPanelVM.eventHandlers.selectionChanged();
+			sutPanelVM.toggleRow(0);
 
 			expect(haveBeenCalledWith.length).toEqual(1);
 			expect(haveBeenCalledWith[0]).toEqual(0);
@@ -141,12 +141,10 @@ describe("Editor Panel ViewModel", function() {
 				haveBeenCalledCount++;
 			};
 
-			sutPanelVM.registerEventHandler("selectionCleared", spyEventHandler);
+			sutPanelVM.eventDispatcher.registerEventHandler("selectionCleared", spyEventHandler);
 
-			sutPanelVM.actionEnvironment.select(0);
-			sutPanelVM.eventHandlers.selectionChanged();
-			sutPanelVM.actionEnvironment.clearSelection();
-			sutPanelVM.eventHandlers.selectionChanged();
+			sutPanelVM.toggleRow(0);
+			sutPanelVM.toggleRow(0);
 
 			expect(haveBeenCalledCount).toEqual(1);
 		});
@@ -157,11 +155,9 @@ describe("Editor Panel ViewModel", function() {
 				haveBeenCalledCount++;
 			};
 
-			sutPanelVM.registerEventHandler("selectionCleared", spyEventHandler);
+			sutPanelVM.eventDispatcher.registerEventHandler("selectionCleared", spyEventHandler);
 
-			sutPanelVM.eventHandlers.selectionChanged(
-					new PeopleHistory.Document.ActionEnvironment(0));
-
+			sutPanelVM.toggleRow(0);
 			sutPanelVM.clearData();
 			
 			expect(haveBeenCalledCount).toEqual(1);
