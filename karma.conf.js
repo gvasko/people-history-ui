@@ -22,7 +22,7 @@ module.exports = function(config) {
 		reporters: ['spec'],
 		colors: true,
 		autoWatch: true,
-		browsers: ['Chrome'],
+		browsers: ['PhantomJS', 'Chrome'],
 		hostname: process.env.IP,
 		port: process.env.PORT,
 		runnerPort: 0,
