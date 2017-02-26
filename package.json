@@ -9,7 +9,10 @@
   "scripts": {
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
-    "ci-test": "karma start karma.conf.js --single-run --browsers Firefox,PhantomJS"
+    "ci-test": "karma start karma.conf.js --single-run --browsers Firefox,PhantomJS",
+    "ci-test-phantomjs": "karma start karma.conf.js --single-run --browsers PhantomJS",
+    "ci-test-firefox": "karma start karma.conf.js --single-run --browsers Firefox",
+    "ci-test-chrome": "karma start karma.conf.js --single-run --browsers Chrome"
   },
   "devDependencies": {
     "jasmine": "^2.5.2",
