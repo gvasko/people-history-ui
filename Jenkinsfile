@@ -3,8 +3,8 @@ node('nodejs') {
 		checkout scm
 
 	stage 'Resolve dependencies'
-		npm install
-		bower install
+		sh 'npm install'
+		sh 'bower install'
 
 	stage 'Test on PhantomJS'
 		sh 'npm run ci-test-phantomjs'
