@@ -9,4 +9,8 @@ node('nodejs') {
 	stage 'Test on PhantomJS'
 		sh 'npm run ci-test-phantomjs'
 
+	stage 'Archiving'
+		sh 'zip PeopleHistory-$BUILD_NUMBER -r .'
+		archiveArtifacts artifacts: '*.zip', fingerprint: true
+
 }
