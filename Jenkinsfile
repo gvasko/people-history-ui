@@ -26,4 +26,9 @@ node('docker') {
 	stage 'Deploy for E2E testing'
 		unstash 'DockerContext'
 		sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
+		def containerId = sh(script: 'docker run -dt --name peoplehistory-$BUILD_NUMBER gvasko/people-history-ui', returnStdout: true)
+		def Q = '\"'
+		def QQ = '\\\"'
+		def localIP = sh(script: "docker network inspect bridge | jq -r ${Q}.[0].Containers.${QQ}$containerId${QQ}.IPv4Address${Q}", returnStdout: true)
+		println localIP
 }
