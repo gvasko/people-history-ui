@@ -28,6 +28,9 @@ node('docker') {
 		sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
 		def containerId = sh(script: 'docker run -dt --name peoplehistory-$BUILD_NUMBER gvasko/people-history-ui', returnStdout: true).trim()
 		def jqCmd = 'jq -r \'.[0].Containers."' + containerId + '".IPv4Address\''
-		def localIP = sh(script: "docker network inspect bridge | $jqCmd", returnStdout: true).trim()
+		def networkText = sh(script: "docker network inspect bridge", returnStdout: true).trim()
+		def slurper = new groovy.json.JsonSlurper()
+		def networks = slurper.parseText(networkText)
+		def localIP = networks[0].Containers."$containerId".IPv4Address
 		println localIP
 }
