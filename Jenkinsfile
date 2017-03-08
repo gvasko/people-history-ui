@@ -18,12 +18,12 @@ node('nodejs') {
 		}
 
 	stage 'Archiving'
-		sh "tar -czvf $dockerContext PeopleHistory --exclude=node_modules --exclude=*.log"
+		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
 }
 node('docker') {
 	stage 'Deploy for E2E testing'
 		unstash 'DockerContext'
-		sh "docker build -t gvasko/PeopleHistory:latest - < $dockerContext"
+		sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
 }
