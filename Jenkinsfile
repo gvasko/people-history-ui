@@ -27,8 +27,7 @@ node('docker') {
 		unstash 'DockerContext'
 		sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
 		def containerId = sh(script: 'docker run -dt --name peoplehistory-$BUILD_NUMBER gvasko/people-history-ui', returnStdout: true).trim()
-		def Q = '\''
-		def QQ = '\\\"'
-		def localIP = sh(script: "docker network inspect bridge | jq -r ${Q}.[0].Containers.${QQ}$containerId${QQ}.IPv4Address${Q}", returnStdout: true).trim()
+		def jqCmd = 'jq -r \'.[0].Containers."' + containerId + '".IPv4Address\''
+		def localIP = sh(script: "docker network inspect bridge | $jqCmd", returnStdout: true).trim()
 		println localIP
 }
