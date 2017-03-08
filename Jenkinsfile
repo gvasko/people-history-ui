@@ -2,19 +2,24 @@ def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 
 node('nodejs') {
 	stage 'Checkout'
-		checkout scm
+		dir('PeopleHistory') {
+			checkout scm
+		}
 
 	stage 'Resolve dependencies'
-		sh 'npm install'
-		sh 'bower install'
+		dir('PeopleHistory') {
+			sh 'npm install'
+			sh 'bower install'
+		}
 
 	stage 'Test on PhantomJS'
-		sh 'npm run ci-test-phantomjs'
+		dir('PeopleHistory') {
+			sh 'npm run ci-test-phantomjs'
+		}
 
 	stage 'Archiving'
-		sh 'zip PeopleHistory-$BUILD_NUMBER -r .'
-		sh "tar -czvf $dockerContext . --exclude=.git --exclude=*.zip --exclude=node_modules --exclude=*.log"
-		archiveArtifacts artifacts: '*.zip', fingerprint: true
+		sh "tar -czvf $dockerContext PeopleHistory --exclude=node_modules --exclude=*.log"
+		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
 }
 node('docker') {
