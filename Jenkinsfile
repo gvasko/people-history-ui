@@ -13,7 +13,7 @@ node('nodejs') {
 
 	stage 'Archiving'
 		sh 'zip PeopleHistory-$BUILD_NUMBER -r .'
-		sh "tar -czvf $dockerContext . --exclude=*.zip --exclude=node_modules --exclude=*.log"
+		sh "tar -czvf $dockerContext . --exclude=.git --exclude=*.zip --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.zip', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
 }
