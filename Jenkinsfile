@@ -1,3 +1,5 @@
+def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
+
 node('nodejs') {
 	stage 'Checkout'
 		checkout scm
@@ -11,6 +13,12 @@ node('nodejs') {
 
 	stage 'Archiving'
 		sh 'zip PeopleHistory-$BUILD_NUMBER -r .'
+		sh "tar -czvf $dockerContext . --exclude=*.zip --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.zip', fingerprint: true
-
+		stash includes: '*.tar.gz', name: 'DockerContext'
+}
+node('docker') {
+	stage 'Deploy for E2E testing'
+		unstash 'DockerContext'
+		sh "docker build -t gvasko/PeopleHistory:latest - < $dockerContext"
 }
