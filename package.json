@@ -12,7 +12,9 @@
     "ci-test": "karma start karma.conf.js --single-run --browsers Firefox,PhantomJS",
     "ci-test-phantomjs": "karma start karma.conf.js --single-run --browsers PhantomJS",
     "ci-test-firefox": "karma start karma.conf.js --single-run --browsers Firefox",
-    "ci-test-chrome": "karma start karma.conf.js --single-run --browsers Chrome"
+    "ci-test-chrome": "karma start karma.conf.js --single-run --browsers Chrome",
+    "e2e-test-chrome": "protractor protractor-chrome.conf.js --seleniumAddress=http://localhost:4444/wd/hub",
+    "e2e-test-firefox": "protractor protractor-firefox.conf.js --seleniumAddress=http://localhost:4444/wd/hub"
   },
   "devDependencies": {
     "jasmine": "^2.5.2",
@@ -22,6 +24,7 @@
     "karma-jasmine": "^1.1.0",
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "karma-phantomjs-launcher": "^1.0.2",
-    "karma-spec-reporter": "0.0.26"
+    "karma-spec-reporter": "0.0.26",
+    "jasmine-reporters": "^2.0.0"
   }
 }
