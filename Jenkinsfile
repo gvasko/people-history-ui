@@ -1,27 +1,31 @@
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 
 node('nodejs') {
-	stage 'Checkout'
+	stage('Checkout') {
 		dir('PeopleHistory') {
 			checkout scm
 		}
+	}
 
-	stage 'Resolve dependencies'
+	stage('Resolve dependencies') {
 		dir('PeopleHistory') {
 			sh 'npm install'
 			sh 'bower install'
 		}
+	}
 
-	stage 'Test on PhantomJS'
+	stage('Test on PhantomJS') {
 		dir('PeopleHistory') {
 			sh 'npm run ci-test-phantomjs'
 		}
+	}
 
-	stage 'Archiving'
+	stage('Archiving') {
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
-		stash includes: 'PeopleHistory/*.* PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
+		stash includes: 'PeopleHistory/*.*,PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
+	}
 }
 
 
@@ -48,7 +52,7 @@ def firefox
 
 node('docker') {
 	try {
-		stage 'Deploy for E2E testing'
+		stage('Deploy for E2E testing') {
 			unstash 'DockerContext'
 			sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
 
@@ -60,21 +64,20 @@ node('docker') {
 			def chromeIP = getLocalIPOfContainer(chrome)
 			firefox = runContainerWithName('selenium/standalone-firefox', "firefox-${env.BUILD_NUMBER}")
 			def firefoxIP = getLocalIPOfContainer(firefox)
+		}
 
-		stage 'Run E2E tests'
-			dir('PeopleHistory') {
-				parallel (
-					chrome: {
-						sh "npm run e2e-test-chrome -- --baseUrl=$appIP --seleniumAddress=http://$chromeIP:4444/wd/hub"
-					},
-					firefox: {
-						sh "npm run e2e-test-firefox -- --baseUrl=$appIP --seleniumAddress=http://$firefoxIP:4444/wd/hub"
-					}
-				)
+		stage('Run E2E tests') {
+		    node('nodejs') {
+				dir('PeopleHistory') {
+					sh "npm run e2e-test-chrome -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$chromeIP:4444/wd/hub"
+					sh "npm run e2e-test-firefox -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$firefoxIP:4444/wd/hub"
+    	    		stash includes: 'testresults/*.xml', name: 'Testresults'
+				}
 			}
+		}
 	}
 	finally {
-		stage 'Finalizing and archiving'
+		stage('Finalizing and archiving') {
 			if (app) {
 				stopContainer(app)
 			}
@@ -84,7 +87,9 @@ node('docker') {
 			if (firefox) {
 				stopContainer(firefox)
 			}
+    		unstash 'Testresults'
 			junit 'testresults/*.xml'
+		}
 	}
 }
 
