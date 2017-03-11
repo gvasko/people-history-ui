@@ -64,10 +64,10 @@ node('docker') {
 		stage 'Run E2E tests'
 			parallel (
 				chrome: {
-					npm run e2e-test-chrome -- --baseUrl="$appIP" --seleniumAddress="http://$chromeIP:4444/wd/hub"
+					sh "npm run e2e-test-chrome -- --baseUrl=$appIP --seleniumAddress=http://$chromeIP:4444/wd/hub"
 				},
 				firefox: {
-					npm run e2e-test-firefox -- --baseUrl="$appIP" --seleniumAddress="http://$firefoxIP:4444/wd/hub"
+					sh "npm run e2e-test-firefox -- --baseUrl=$appIP --seleniumAddress=http://$firefoxIP:4444/wd/hub"
 				}
 			)
 	}
