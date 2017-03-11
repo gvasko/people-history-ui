@@ -1,7 +1,7 @@
 describe('Document list', function() {
 	
 	beforeEach(function() {
-		browser.get('http://localhost:8080/#/home');
+		browser.get('/#/home');
 	});
 
 	it('should have a title', function() {

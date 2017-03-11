@@ -2,7 +2,9 @@ logs/*
 !.gitkeep
 node_modules/
 bower_components/
+testresults/
 tmp
 .DS_Store
 .idea
 .git
+*.log
