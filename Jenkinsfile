@@ -21,7 +21,7 @@ node('nodejs') {
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
-		stash includes: './*.* src/client/test/e2e/**', name: 'E2ETesting'
+		stash includes: 'PeopleHistory/*.* PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
 }
 
 
@@ -62,14 +62,16 @@ node('docker') {
 			def firefoxIP = getLocalIPOfContainer(firefox)
 
 		stage 'Run E2E tests'
-			parallel (
-				chrome: {
-					sh "npm run e2e-test-chrome -- --baseUrl=$appIP --seleniumAddress=http://$chromeIP:4444/wd/hub"
-				},
-				firefox: {
-					sh "npm run e2e-test-firefox -- --baseUrl=$appIP --seleniumAddress=http://$firefoxIP:4444/wd/hub"
-				}
-			)
+			dir('PeopleHistory') {
+				parallel (
+					chrome: {
+						sh "npm run e2e-test-chrome -- --baseUrl=$appIP --seleniumAddress=http://$chromeIP:4444/wd/hub"
+					},
+					firefox: {
+						sh "npm run e2e-test-firefox -- --baseUrl=$appIP --seleniumAddress=http://$firefoxIP:4444/wd/hub"
+					}
+				)
+			}
 	}
 	finally {
 		stage 'Finalizing and archiving'
