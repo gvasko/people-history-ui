@@ -1,4 +1,5 @@
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
+def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
 node('nodejs') {
 	stage('Build') {
@@ -52,9 +53,9 @@ node('docker') {
 
 			app = runContainerWithName('gvasko/people-history-ui', "peoplehistory-${env.BUILD_NUMBER}")
 			appIP = getLocalIPOfContainer(app)
-			chrome = runContainerWithName('selenium/standalone-chrome', "chrome-${env.BUILD_NUMBER}")
+			chrome = runContainerWithName("$dockerRegistry/selenium/standalone-chrome", "chrome-${env.BUILD_NUMBER}")
 			chromeIP = getLocalIPOfContainer(chrome)
-			firefox = runContainerWithName('selenium/standalone-firefox', "firefox-${env.BUILD_NUMBER}")
+			firefox = runContainerWithName("$dockerRegistry/selenium/standalone-firefox", "firefox-${env.BUILD_NUMBER}")
 			firefoxIP = getLocalIPOfContainer(firefox)
 		}
 
