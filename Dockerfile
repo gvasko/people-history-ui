@@ -1,5 +1,5 @@
 # source: https://nodejs.org/en/docs/guides/nodejs-docker-webapp/
-FROM node:boron
+FROM 221820444680.dkr.ecr.eu-central-1.amazonaws.com/nodeje/node:boron
 
 # Create app directory
 RUN mkdir -p /usr/src/app
