@@ -1,31 +1,19 @@
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 
 node('nodejs') {
-	stage('Checkout') {
+	stage('Build') {
 		dir('PeopleHistory') {
 			checkout scm
-		}
-	}
-
-	stage('Resolve dependencies') {
-		dir('PeopleHistory') {
 			sh 'npm install'
 			sh 'bower install'
-		}
-	}
-
-	stage('Test on PhantomJS') {
-		dir('PeopleHistory') {
 			sh 'npm run ci-test-phantomjs'
 		}
-	}
-
-	stage('Archiving') {
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
 		stash includes: 'PeopleHistory/*.*,PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
 	}
+
 }
 
 
@@ -56,7 +44,7 @@ node('docker') {
 		def chromeIP
 		def firefoxIP
 		
-		stage('Deploy for E2E testing') {
+		stage('Deploy') {
 			unstash 'DockerContext'
 			sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
 
@@ -71,7 +59,7 @@ node('docker') {
 		}
 
 	    node('nodejs') {
-			stage('Run E2E tests') {
+			stage('E2E Test') {
 				dir('PeopleHistory') {
 					sh "npm run e2e-test-chrome -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$chromeIP:4444/wd/hub"
 					sh "npm run e2e-test-firefox -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$firefoxIP:4444/wd/hub"
@@ -81,7 +69,11 @@ node('docker') {
 		}
 	}
 	finally {
-		stage('Finalizing and archiving') {
+		stage('Publish') {
+    		unstash 'TestResults'
+			junit 'testresults/*.xml'
+		}
+		stage('Cleanup') {
 			if (app) {
 				stopContainer(app)
 			}
@@ -91,8 +83,6 @@ node('docker') {
 			if (firefox) {
 				stopContainer(firefox)
 			}
-    		unstash 'TestResults'
-			junit 'testresults/*.xml'
 		}
 	}
 }
