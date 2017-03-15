@@ -35,6 +35,11 @@ def getLocalIPOfContainer(String containerId) {
 	return localIP.split("/")[0];
 }
 
+def getNextBuildNumber() {
+	def images = sh(script: "docker images $dockerRegistry/gvasko/people-history-ui", returnStdout: true).trim()
+	return images.readLines().size()
+}
+
 def app
 def chrome
 def firefox
@@ -59,21 +64,28 @@ node('docker') {
 			firefoxIP = getLocalIPOfContainer(firefox)
 		}
 
+		def chromeSuccessful = true
+		def firefoxSuccessful = true
 	    node('nodejs') {
 			stage('E2E Test') {
 				dir('PeopleHistory') {
-					sh "npm run e2e-test-chrome -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$chromeIP:4444/wd/hub"
-					sh "npm run e2e-test-firefox -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$firefoxIP:4444/wd/hub"
+					chromeSuccessful = sh(script: "npm run e2e-test-chrome -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$chromeIP:4444/wd/hub", returnStatus: true) == 0
+					firefoxSuccessful = sh(script: "npm run e2e-test-firefox -- --baseUrl=http://$appIP:8080 --seleniumAddress=http://$firefoxIP:4444/wd/hub", returnStatus: true) == 0
     	    		stash includes: 'testresults/*.xml', name: 'TestResults'
 				}
 			}
 		}
-	}
-	finally {
 		stage('Publish') {
     		unstash 'TestResults'
 			junit 'testresults/*.xml'
+			if (chromeSuccessful && firefoxSuccessful) {
+				def newTag = getNextBuildNumber()
+				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
+				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
+			}
 		}
+	}
+	finally {
 		stage('Cleanup') {
 			if (app) {
 				stopContainer(app)
