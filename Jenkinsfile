@@ -35,11 +35,6 @@ def getLocalIPOfContainer(String containerId) {
 	return localIP.split("/")[0];
 }
 
-def getNextBuildNumber() {
-	def images = sh(script: "docker images $dockerRegistry/gvasko/people-history-ui", returnStdout: true).trim()
-	return images.readLines().size()
-}
-
 def app
 def chrome
 def firefox
@@ -79,7 +74,10 @@ node('docker') {
     		unstash 'TestResults'
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
-				def newTag = getNextBuildNumber()
+				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
+				Date now = new Date()
+				SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd-HHmmss");
+				def newTag = timestamp.format(now)
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 			}
