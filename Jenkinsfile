@@ -1,3 +1,6 @@
+import java.text.SimpleDateFormat
+import java.util.Data
+
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
