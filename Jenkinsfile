@@ -39,7 +39,7 @@ def getLocalIPOfContainer(String containerId) {
 }
 
 def getNextDockerTag() {
-	def imageIdsText = sh(script: "aws ecr list-images --repository-name gvasko/people-history-ui --filter tagStatus=\"TAGGED\"", returnStdout: true).trim()
+	def imageIdsText = sh(script: "aws ecr list-images --repository-name gvasko/people-history-ui --filter tagStatus=\"TAGGED\" --region eu-central-1", returnStdout: true).trim()
 	def slurper = new groovy.json.JsonSlurper()
 	def imageIds = slurper.parseText(imageIdsText)
 	def lastTag = 0
