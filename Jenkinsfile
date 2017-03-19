@@ -78,7 +78,7 @@ node('docker') {
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
-				def newTag = ${env.BUILD_NUMBER}
+				def newTag = env.BUILD_NUMBER
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
