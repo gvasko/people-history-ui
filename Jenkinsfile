@@ -38,6 +38,19 @@ def getLocalIPOfContainer(String containerId) {
 	return localIP.split("/")[0];
 }
 
+def getNextDockerTag() {
+	def imageIdsText = sh(script: "aws ecr list-images --repository-name gvasko/people-history-ui --filter tagStatus=\"TAGGED\"", returnStdout: true).trim()
+	def slurper = new groovy.json.JsonSlurper()
+	def imageIds = slurper.parseText(imageIdsText)
+	def lastTag = 0
+	imageIds.imageIds.each{
+		if (it.imageTag.isInteger()) {
+			lastTag = [lastTag, it.imageTag.toInteger()].max()
+		}
+	}
+	return lastTag + 1	
+}
+
 def app
 def chrome
 def firefox
@@ -78,7 +91,7 @@ node('docker') {
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
-				def newTag = env.BUILD_NUMBER
+				def newTag = getNextDockerTag()
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
