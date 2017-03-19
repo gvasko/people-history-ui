@@ -43,9 +43,10 @@ def getNextDockerTag() {
 	def slurper = new groovy.json.JsonSlurper()
 	def imageIds = slurper.parseText(imageIdsText)
 	def lastTag = 0
-	imageIds.imageIds.each{
-		if (it.imageTag.isInteger()) {
-			lastTag = [lastTag, it.imageTag.toInteger()].max()
+	for (int i=0; i < imageIds.imageIds.size(); i++) {
+		def img = imageIds.imageIds[i]
+		if (img.imageTag.isInteger()) {
+			lastTag = [lastTag, img.imageTag.toInteger()].max()
 		}
 	}
 	return lastTag + 1	
