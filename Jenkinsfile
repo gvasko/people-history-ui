@@ -47,7 +47,10 @@ def getNextDockerTag() {
 		def img = imageIds.imageIds[i]
 		def isInteger = (img.imageTag ==~ /\d+/)
 		if (isInteger) {
-			lastTag = [lastTag, Integer.parseInt(img.imageTag)].max()
+			def imageTagInt = Integer.parseInt(img.imageTag)
+			if (imageTagInt > lastTag) {
+				lastTag = imageTagInt
+			}
 		}
 	}
 	return lastTag + 1	
