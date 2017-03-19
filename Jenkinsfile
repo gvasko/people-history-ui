@@ -78,11 +78,10 @@ node('docker') {
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
-				Date now = new Date()
-				SimpleDateFormat timestamp = new SimpleDateFormat("yyyyMMdd-HHmmss");
-				def newTag = timestamp.format(now)
+				def newTag = ${env.BUILD_NUMBER}
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
+				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
 			}
 		}
 	}
