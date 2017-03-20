@@ -6,20 +6,6 @@ def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
 def newTag = 'unknown'
 
-//try {
-//	node {
-//		currentBuild.getParent().description = """
-//			Deploy the latest build to Amazon
-//			<a href="https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-Latest&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-latest.json" target="_blank">
-//				<span><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></span>
-//			</a>
-//		"""
-//	}
-//}
-//catch (IOException ex) {
-//	println 'Cannot update job description'
-//}
-
 node('docker') {
 	newTag = getNextDockerTag()
 }
@@ -125,15 +111,15 @@ node('docker') {
 				def iamUser = sh(script: "cat ~/.aws/credentials | grep 'aws_access_key_id' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
 				def iamSecret = sh(script: "cat ~/.aws/credentials | grep 'aws_secret_access_key' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
 
-				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@IAM_USER@%$iamUser%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "aws s3 cp PeopleHistory/resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
-
-				currentBuild.description = ("Deploy this build to Amazon"
-					+ "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-$newTag&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-$newTag.json\" target=\"_blank\">"
-					+ "<span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>")
+				dir('PeopleHistory/resources') {
+					sh "sed -i 's%@TAG@%$newTag%g' deploy-to-aws.html"				
+					sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' cfn-demo-deploy.json"
+					sh "sed -i 's%@IAM_USER@%$iamUser%' cfn-demo-deploy.json"
+					sh "sed -i 's%@IAM_SECRET@%$iamSecret%' cfn-demo-deploy.json"
+					sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' cfn-demo-deploy.json"
+					sh "aws s3 cp cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
+				}
+				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'PeopleHistory/resources', reportFiles: 'deploy-to-aws.html', reportName: 'Deploy to AWS'])
 			}
 		}
 	}
