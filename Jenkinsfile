@@ -17,7 +17,7 @@ node('nodejs') {
 			sh 'npm install'
 			sh 'bower install'
 			sh 'npm run ci-test-phantomjs'
-			sh "sed -i 's/@TAG@/$newTag/' src/client/app/tag.json"
+			sh "sed -i 's/@TAG@/$newTag/' src/client/tag.json"
 		}
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
