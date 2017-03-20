@@ -125,9 +125,9 @@ node('docker') {
 				def iamUser = sh(script: "cat ~/.aws/credentials | grep 'aws_access_key_id' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
 				def iamSecret = sh(script: "cat ~/.aws/credentials | grep 'aws_secret_access_key' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
 
-				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@IAM_USER@%$iamUser%' resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@IAM_USER@%$iamUser%' PeopleHistory/resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' resources/cfn-demo-deploy.json"
 				sh "aws s3 cp resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
 
