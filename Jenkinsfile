@@ -36,6 +36,7 @@ node('nodejs') {
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
+		stash includes: 'resources/*', name: 'Resources'
 		stash includes: 'PeopleHistory/*.*,PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
 	}
 
@@ -114,19 +115,26 @@ node('docker') {
 		}
 		stage('Publish') {
     		unstash 'TestResults'
+    		unstash 'Resources'
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
+				def iamUser = sh(script: "$(cat ~/.aws/credentials | grep 'aws_access_key_id' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim())
+				def iamSecret = sh(script: "$(cat ~/.aws/credentials | grep 'aws_secret_access_key' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim())
+
+				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@IAM_USER@%$iamUser%' resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' resources/cfn-demo-deploy.json"
+				sh "aws s3 cp resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
+
 				node {
-					currentBuild.setDescription("""
-						Deploy this build to Amazon
-						<a href="https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-$newTag&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-$newTag.json" target="_blank">
-							<span><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></span>
-						</a>
-					""")
+					currentBuild.description = ("Deploy this build to Amazon"
+						+ "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-$newTag&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-$newTag.json\" target=\"_blank\">"
+						+ "<span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>")
 				}
 			}
 		}
