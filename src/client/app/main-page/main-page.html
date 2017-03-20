@@ -1,17 +1,25 @@
-<nav class="navbar navbar-inverse">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="#">PeopleHistory</a>
+<div ng-controller="MainPage as vm">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">PeopleHistory</a>
+			</div>
+			<ul class="nav navbar-nav navbar-left">
+				<li><a ng-href="#/home">Home</a></li>
+				<li><a ng-href="#/documents">Documents</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a ng-href="#"><span class="glyphicon gliphicon-user"></span> Sign Up</a></li>
+				<li><a ng-href="#"><span class="glyphicon gliphicon-log-in"></span> Login</a></li>
+			</ul>
 		</div>
-		<ul class="nav navbar-nav navbar-left">
-			<li><a ng-href="#/home">Home</a></li>
-			<li><a ng-href="#/documents">Documents</a></li>
-		</ul>
-		<ul class="nav navbar-nav navbar-right">
-			<li><a ng-href="#"><span class="glyphicon gliphicon-user"></span> Sign Up</a></li>
-			<li><a ng-href="#"><span class="glyphicon gliphicon-log-in"></span> Login</a></li>
-		</ul>
-	</div>
-</nav>
+	</nav>
 
-<div ng-view></div>
+	<div ng-view></div>
+
+	<footer class="footer">
+		<div class="container">
+			<p class="text-muted">Tag: {{vm.tag.tag}}</p>
+		</div>
+	</footer>
+</div>
