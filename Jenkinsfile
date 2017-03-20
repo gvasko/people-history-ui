@@ -8,7 +8,7 @@ node('docker') {
 }
 
 currentBuild.displayName = "#${newTag}-${env.BUILD_NUMBER}"
-currentBuild.description = "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-${newTag}.json\" target=\"_blank\"><span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>"
+currentBuild.description = "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-${newTag}&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-${newTag}.json\" target=\"_blank\"><span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>"
 
 node('nodejs') {
 	stage('Build') {
