@@ -129,13 +129,11 @@ node('docker') {
 				sh "sed -i 's%@IAM_USER@%$iamUser%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "aws s3 cp resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
+				sh "aws s3 cp PeopleHistory/resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
 
-				node {
-					currentBuild.description = ("Deploy this build to Amazon"
-						+ "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-$newTag&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-$newTag.json\" target=\"_blank\">"
-						+ "<span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>")
-				}
+				currentBuild.description = ("Deploy this build to Amazon"
+					+ "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-$newTag&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-$newTag.json\" target=\"_blank\">"
+					+ "<span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>")
 			}
 		}
 	}
