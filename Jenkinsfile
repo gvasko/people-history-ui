@@ -6,19 +6,19 @@ def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
 def newTag = 'unknown'
 
-try {
-	node {
-		currentBuild.getParent().description = """
-			Deploy the latest build to Amazon
-			<a href="https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-Latest&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-latest.json" target="_blank">
-				<span><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></span>
-			</a>
-		"""
-	}
-}
-catch (IOException ex) {
-	println 'Cannot update job description'
-}
+//try {
+//	node {
+//		currentBuild.getParent().description = """
+//			Deploy the latest build to Amazon
+//			<a href="https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo-Latest&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-latest.json" target="_blank">
+//				<span><img src="https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png"></span>
+//			</a>
+//		"""
+//	}
+//}
+//catch (IOException ex) {
+//	println 'Cannot update job description'
+//}
 
 node('docker') {
 	newTag = getNextDockerTag()
