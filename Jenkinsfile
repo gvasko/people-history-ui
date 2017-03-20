@@ -128,7 +128,7 @@ node('docker') {
 				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@IAM_USER@%$iamUser%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@IAM_SECRET@%$iamSecret%' PeopleHistory/resources/cfn-demo-deploy.json"
-				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' resources/cfn-demo-deploy.json"
+				sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' PeopleHistory/resources/cfn-demo-deploy.json"
 				sh "aws s3 cp resources/cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
 
 				node {
