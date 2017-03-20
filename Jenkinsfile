@@ -4,6 +4,12 @@ import java.util.Date
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
+def newTag = 'unknown'
+
+node('docker') {
+	newTag = getNextDockerTag()
+}
+
 node('nodejs') {
 	stage('Build') {
 		dir('PeopleHistory') {
@@ -11,6 +17,7 @@ node('nodejs') {
 			sh 'npm install'
 			sh 'bower install'
 			sh 'npm run ci-test-phantomjs'
+			sh "sed -i 's/@TAG@/$newTag/' src/client/app/tag.json"
 		}
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
@@ -96,7 +103,6 @@ node('docker') {
 			junit 'testresults/*.xml'
 			if (chromeSuccessful && firefoxSuccessful) {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:latest"
-				def newTag = getNextDockerTag()
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
