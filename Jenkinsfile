@@ -117,7 +117,7 @@ node('docker') {
 					sh "sed -i 's%@IAM_USER@%$iamUser%' cfn-demo-deploy.json"
 					sh "sed -i 's%@IAM_SECRET@%$iamSecret%' cfn-demo-deploy.json"
 					sh "sed -i 's%@DOCKER_IMAGE@%$dockerRegistry/gvasko/people-history-ui:$newTag%' cfn-demo-deploy.json"
-					sh "aws s3 cp cfn-demo-deploy.json s3://gvasko/people-history/people-history-$newTag.json"
+					sh "aws s3 cp cfn-demo-deploy.json s3://gvasko/people-history/people-history-${newTag}.json"
 				}
 				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: true, reportDir: 'PeopleHistory/resources', reportFiles: 'deploy-to-aws.html', reportName: 'Deploy to AWS'])
 			}
