@@ -27,12 +27,13 @@ body {
   background-color: #555555;
 }
 
-.container {
+.footer .container {
   width: auto;
   max-width: 680px;
   padding: 0 15px;
 }
-.container .text-muted {
+
+.footer .container .text-muted {
   margin: 10px 0;
   text-align: center;
 }
