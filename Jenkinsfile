@@ -36,7 +36,7 @@ node('nodejs') {
 		sh "tar -C PeopleHistory -czvf $dockerContext . --exclude=.git --exclude=node_modules --exclude=*.log"
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
-		stash includes: 'resources/*', name: 'Resources'
+		stash includes: 'PeopleHistory/resources/*', name: 'Resources'
 		stash includes: 'PeopleHistory/*.*,PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
 	}
 
