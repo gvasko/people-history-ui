@@ -122,8 +122,8 @@ node('docker') {
 				sh "docker tag gvasko/people-history-ui:latest $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:$newTag"
 				sh "docker push $dockerRegistry/gvasko/people-history-ui:latest"
-				def iamUser = sh(script: "cat ~/.aws/credentials | grep 'aws_access_key_id' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim())
-				def iamSecret = sh(script: "cat ~/.aws/credentials | grep 'aws_secret_access_key' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim())
+				def iamUser = sh(script: "cat ~/.aws/credentials | grep 'aws_access_key_id' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
+				def iamSecret = sh(script: "cat ~/.aws/credentials | grep 'aws_secret_access_key' | tr -d '[:space:]' | cut -d= -f2", returnStdout: true).trim()
 
 				sh "sed -i 's%@APP_DESCRIPTION@%PeopleHistoryDemo-$newTag%' resources/cfn-demo-deploy.json"
 				sh "sed -i 's%@IAM_USER@%$iamUser%' resources/cfn-demo-deploy.json"
