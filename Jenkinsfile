@@ -1,6 +1,3 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-
 def dockerContext = 'PeopleHistory-dockerctx.tar.gz'
 def dockerRegistry = '221820444680.dkr.ecr.eu-central-1.amazonaws.com'
 
@@ -9,6 +6,9 @@ def newTag = 'unknown'
 node('docker') {
 	newTag = getNextDockerTag()
 }
+
+currentBuild.displayName = "#${newTag}-${env.BUILD_NUMBER}"
+currentBuild.description = "<a href=\"https://console.aws.amazon.com/cloudformation/home?region=eu-central-1#/stacks/new?stackName=PeopleHistoryDemo&templateURL=https://s3.eu-central-1.amazonaws.com/gvasko/people-history/people-history-${newTag}.json\" target=\"_blank\"><span><img src=\"https://s3.amazonaws.com/cloudformation-examples/cloudformation-launch-stack.png\"></span></a>"
 
 node('nodejs') {
 	stage('Build') {
