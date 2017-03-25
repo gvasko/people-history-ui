@@ -23,7 +23,6 @@ node('nodejs') {
 		archiveArtifacts artifacts: '*.tar.gz', fingerprint: true
 		stash includes: '*.tar.gz', name: 'DockerContext'
 		stash includes: 'PeopleHistory/resources/*', name: 'Resources'
-		stash includes: 'PeopleHistory/*.*,PeopleHistory/src/client/test/e2e/**', name: 'E2ETesting'
 	}
 
 }
@@ -77,8 +76,6 @@ node('docker') {
 		stage('Deploy') {
 			unstash 'DockerContext'
 			sh "docker build -t gvasko/people-history-ui:latest - < $dockerContext"
-
-			unstash 'E2ETesting'
 
 			app = runContainerWithName('gvasko/people-history-ui', "peoplehistory-${env.BUILD_NUMBER}")
 			appIP = getLocalIPOfContainer(app)
