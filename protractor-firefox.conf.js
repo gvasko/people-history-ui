@@ -7,10 +7,12 @@ exports.config = {
       onPrepare: function() {
             var jasmineReporters = require('jasmine-reporters');
             jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
-                  consolidateAll: true,
+                  consolidateAll: false,
                   savePath: 'testresults',
-                  package: 'firefox',
-                  filePrefix: 'firefox'
+                  filePrefix: browserName,
+                  modifySuiteName: function(generatedSuiteName, suite) {
+                        return browserName + '.' + generatedSuiteName;
+                  }
             }));
       },
       specs: ['src/client/test/e2e/documents.test.js']
