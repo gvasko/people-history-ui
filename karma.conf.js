@@ -20,7 +20,11 @@ module.exports = function(config) {
 		preprocessors: {
 			'**/*.html': 'ng-html2js'
 		},
-		reporters: ['spec'],
+		reporters: ['spec', 'junit'],
+		junitReporter: {
+			outputDir: 'testresults',
+			suite: 'phantomjs'
+		},
 		colors: true,
 		autoWatch: true,
 		browsers: ['PhantomJS', 'Chrome'],
