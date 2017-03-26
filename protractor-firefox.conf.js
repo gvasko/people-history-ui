@@ -5,6 +5,7 @@ exports.config = {
       },
       framework: 'jasmine2',
       onPrepare: function() {
+            var browserName = exports.config.capabilities.browserName;
             var jasmineReporters = require('jasmine-reporters');
             jasmine.getEnv().addReporter(new jasmineReporters.JUnitXmlReporter({
                   consolidateAll: false,
